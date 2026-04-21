@@ -95,11 +95,22 @@ if __name__ == "__main__":
                 duracion = fin - inicio
                 tiempos.append(duracion)
 
-                nombre_log = f"{archivo}.json"
-                ruta_log = os.path.join(carpeta_logs, nombre_log)
+                rutas_base = os.path.splitext(archivo)[0]
+                ruta_log = f"{archivo}.json"
+                ruta_log_txt = os.path.join(carpeta_logs, f"{nombre_base}.txt")
 
                 with open(ruta_log, "w", encoding="utf-8") as f_json:
                     json.dump(resultado, f_json, indent=4, ensure_ascii=False)
+
+                with open(ruta_log_txt, "w", encoding="utf-8") as f_txt:
+                    f_txt.write(f"INFORME DE CLASIFICACIÓN\n")
+                    f_txt.write(f"{'='*30}\n")
+                    f_txt.write(f"Archivo: {archivo}\n")
+                    f_txt.write(f"Categoría: {cat.upper()}\n")
+                    f_txt.write(f"Confianza: {conf*100:.2f}%\n")
+                    f_txt.write(f"Tiempo: {duracion:.2f}s\n")
+                    f_txt.write(f"Razones: {razones}\n")
+                    f_txt.write(f"{'='*30}\n")
 
                 # Mostrar resultado simplificado en consola
                 cat = resultado.get("categoria", "desconocido")
