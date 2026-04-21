@@ -23,14 +23,18 @@ def clasificar_imagen_local(img: str, categorias: list) -> dict:
 
         # 2. Construir el prompt (similar al original pero adaptado a LLaVA)
         prompt_texto = f"""
-        Analyze this image and classify it into EXACTLY ONE of these categories: {', '.join(categorias)}.
+        Analiza esta imagen y clasifícala en EXACTAMENTE UNA de estas categorías: {', '.join(categorias)}.
         
-        Return ONLY a JSON object with:
-        - "categoria": the chosen category
-        - "confianza": a number between 0 and 1
-        - "razones": a short explanation
-        
-        If unsure, use "desconocido".
+       Responde ÚNICAMENTE en formato JSON con la siguiente estructura:
+        {{
+            "categoria": "nombre_de_la_categoria",
+            "confianza": valor_numerico_0_a_1,
+            "razones": "explicación detallada en español"
+        }}
+    
+        Si no estás seguro o la imagen no coincide con ninguna categoría,
+    responde con categoria: "desconocido"
+    IMPORTANTE: La explicación de 'razones' debe ser en español.
         """
 
         # 3. Preparar el payload para la API de Ollama
@@ -53,28 +57,29 @@ def clasificar_imagen_local(img: str, categorias: list) -> dict:
         
         return json.loads(respuesta_texto)
 
-    except FileNotFoundError:
-        return {"categoria": "error", "confianza": 0, "razones": f"Archivo no encontrado: {img}"}
-    except requests.exceptions.RequestException as e:
-        return {"categoria": "error", "confianza": 0, "razones": f"Error de conexión con Ollama: {str(e)}"}
     except Exception as e:
         return {
             "categoria": "error", 
             "confianza": 0, 
-            "razones": f"Error inesperado: {str(e)}",
-            "raw": locals().get('respuesta_texto', 'No response')
+            "razones": f"Error: {str(e)}"
         }
+
+
+
+
 
 # --- PRUEBA DE EJECUCIÓN ---
 if __name__ == "__main__":
-    carpeta_fotos = ".img"
+    carpeta_fotos = "img"
+    carpeta_logs = "logs"
+
     
     if os.path.exists(carpeta_fotos):
         # Obtenemos la lista de todas las imágenes
         archivos = [f for f in os.listdir(carpeta_fotos) if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
         
         if archivos:
-            print(f"📂 Se han encontrado {len(archivos)} imágenes en '{carpeta_fotos}'.")
+            print(f"INFO: Se han encontrado {len(archivos)} imágenes en '{carpeta_fotos}'.")
             print(f"🤖 Usando modelo: {MODELO_VISION}\n")
             print("-" * 50)
 
@@ -86,15 +91,24 @@ if __name__ == "__main__":
                 
                 inicio = time.time()
                 resultado = clasificar_imagen_local(ruta_completa, CATEGORIAS_POR_DEFECTO)
-                fin = time.time()
-                
+                fin = time.time()                
                 duracion = fin - inicio
                 tiempos.append(duracion)
+
+                nombre_log = f"{archivo}.json"
+                ruta_log = os.path.join(carpeta_logs, nombre_log)
+
+                with open(ruta_log, "w", encoding="utf-8") as f_json:
+                    json.dump(resultado, f_json, indent=4, ensure_ascii=False)
 
                 # Mostrar resultado simplificado en consola
                 cat = resultado.get("categoria", "desconocido")
                 conf = resultado.get("confianza", 0)
-                print(f"✅ Resultado: {cat} ({conf*100:.1f}%) | ⏱️ {duracion:.2f}s")
+                razones = resultado.get("razones", "Sin explicación disponible")
+                print(f"✅ CATEGORÍA: {cat.upper()}")
+                print(f"🎯 CONFIANZA: {conf*100:.1f}%")
+                print(f"📝 RAZONES: {razones}") 
+                print(f"⏱️ TIEMPO: {duracion:.2f}s")
                 print("-" * 50)
 
             # Resumen final
