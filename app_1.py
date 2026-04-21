@@ -95,7 +95,7 @@ if __name__ == "__main__":
                 duracion = fin - inicio
                 tiempos.append(duracion)
 
-                rutas_base = os.path.splitext(archivo)[0]
+                nombre_base = os.path.splitext(archivo)[0]
                 ruta_log = f"{archivo}.json"
                 ruta_log_txt = os.path.join(carpeta_logs, f"{nombre_base}.txt")
 
