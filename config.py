@@ -1,7 +1,7 @@
 # config.py — configuración compartida terminal + interfaz
 
 # Opciones recomendadas: 'llava', 'moondream', 'bakllava'
-MODELO_VISION = 'llava'    
+MODELO_VISION = 'moondream'    
 OLLAMA_URL    = 'http://localhost:11434/api/generate'
 
 # Parámetros para garantizar que la IA no invente categorías (alucinaciones)
