@@ -388,6 +388,20 @@ class VisionXApp(ctk.CTk):
     def finalizar_clasificacion(self):
         self.clasificando = False
         self.classify_btn.configure(state="normal", text="🚀 CLASIFICAR")
+
+        # --- CÓDIGO PARA AUTO-GUARDADO ---
+        if self.resultados_clasificacion:
+            folder = os.path.join(os.getcwd(), "resultados")
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        
+        nombre_base = f"proceso_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        ruta_final = os.path.join(folder, nombre_base)
+        
+        with open(ruta_final, "w", encoding="utf-8") as f:
+            json.dump(self.resultados_clasificacion, f, indent=4, ensure_ascii=False)
+        print(f"Auto-guardado en: {ruta_final}") 
+        
         self.result_area.insert("end", "✅ CLASIFICACIÓN COMPLETADA.\n")
         self.result_area.insert("end", "Puedes guardar los resultados usando los botones 📄 JSON o 📝 TXT.\n")
         self.status_badge.configure(text="✓ Clasificación lista", text_color="#4cd137")
