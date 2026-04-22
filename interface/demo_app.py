@@ -4,6 +4,7 @@ import threading
 import base64
 import requests
 import json
+import time 
 import customtkinter as ctk
 from tkinter import filedialog, messagebox
 from PIL import Image
@@ -24,7 +25,7 @@ except ModuleNotFoundError:
                                   'casa', 'desconocido']
         OLLAMA_URL = "http://localhost:11434/api/generate"
         MODELO_VISION = "llava"
-        TIMEOUT = 120
+        TIMEOUT = 300
         CONFIG_CONSISTENTE = {
             "temperature": 0.2,
             "seed": 42,
@@ -50,7 +51,6 @@ class VisionXApp(ctk.CTk):
         self.imagenes_seleccionadas = []    
         self.resultados_clasificacion = []  
         self.clasificando = False          
-
 
         # --- UI LAYOUT ---
         self.setup_ui()
@@ -243,11 +243,52 @@ class VisionXApp(ctk.CTk):
     
     def clasificar_una_imagen(self, ruta_imagen, categorias_str):
         """Envía una imagen a Ollama y devuelve un diccionario con los resultados."""
+        import time
+        start_time = time.time()
+
+        # === VALIDACIÓN DE PARÁMETROS ===
+        print(f"[DEBUG] Parámetro ruta_imagen recibido: {ruta_imagen}")
+        print(f"[DEBUG] Parámetro categorias_str recibido: {categorias_str}")
+        print(f"[DEBUG] Tipo ruta_imagen: {type(ruta_imagen)}")
+        print(f"[DEBUG] Tipo categorias_str: {type(categorias_str)}")
+        
+        if not ruta_imagen:
+            print("❌ Error: ruta_imagen está vacío o es None")
+            return None
+        
+        if not categorias_str:
+            print("❌ Error: categorias_str está vacío o es None")
+            return None
+        
+        if not isinstance(ruta_imagen, str):
+            print(f"❌ Error: ruta_imagen debe ser string, es {type(ruta_imagen)}")
+            return None
+        
+        if not isinstance(categorias_str, str):
+            print(f"❌ Error: categorias_str debe ser string, es {type(categorias_str)}")
+            return None
+        
         try:
+            # Validaciones iniciales
+            if not os.path.exists(ruta_imagen):
+                print(f"❌ Error: No existe el archivo {ruta_imagen}")
+                return None
+                
             with open(ruta_imagen, "rb") as f:
                 img_base64 = base64.b64encode(f.read()).decode('utf-8')
             
-            prompt = f"Clasifica esta imagen en una de estas categorías: {categorias_str}. Responde en formato: CATEGORIA: <categoria>, CONFIANZA: <0-100>, RAZONES: <breve explicación>"
+            # Prompt mejorado para obtener el formato deseado
+            prompt = f"""Clasifica esta imagen en UNA SOLA de estas categorías: {categorias_str}.
+            Responde EXACTAMENTE en este formato (sin texto adicional antes o después):
+            CATEGORÍA: <categoría exacta>
+            CONFIANZA: <número entre 0 y 100>
+            RAZONES: <explicación detallada en español>
+
+            Ejemplo de respuesta correcta:
+            CATEGORÍA: GATO
+            CONFIANZA: 95.5
+            RAZONES: La imagen muestra claramente un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría."""
+            
             payload = {
                 "model": config.MODELO_VISION,
                 "prompt": prompt,
@@ -256,46 +297,92 @@ class VisionXApp(ctk.CTk):
             }
             
             respuesta = requests.post(config.OLLAMA_URL, json=payload, timeout=config.TIMEOUT)
+            
+            elapsed_time = time.time() - start_time
+            
             if respuesta.status_code == 200:
                 data = respuesta.json()
                 texto_respuesta = data.get("response", "").strip()
                 
-                # Extracción simple (puedes mejorar el parsing)
+                # Extracción robusta de los campos
                 categoria = "desconocida"
-                confianza = "N/A"
-                razones = texto_respuesta
-                # Intento de parseo básico
-                if "CATEGORIA:" in texto_respuesta:
-                    partes = texto_respuesta.split(",")
-                    for p in partes:
-                        if "CATEGORIA:" in p:
-                            categoria = p.split("CATEGORIA:")[1].strip()
-                        elif "CONFIANZA:" in p:
-                            confianza = p.split("CONFIANZA:")[1].strip()
-                        elif "RAZONES:" in p:
-                            razones = p.split("RAZONES:")[1].strip()
+                confianza = 0.0
+                razones = "No se pudo extraer la explicación"
+                
+                # Buscar cada campo en el texto
+                lines = texto_respuesta.split('\n')
+                for line in lines:
+                    line = line.strip()
+                    if line.startswith("CATEGORÍA:") or line.startswith("CATEGORIA:"):
+                        categoria = line.split(":", 1)[1].strip()
+                    elif line.startswith("CONFIANZA:"):
+                        try:
+                            # Extraer número (puede venir con o sin %)
+                            confianza_str = line.split(":", 1)[1].strip().replace("%", "")
+                            confianza_val = float(confianza_str)
+                            confianza = confianza_val / 100.0  # Convertir a 0-1
+                        except:
+                            confianza = 0.0
+                    elif line.startswith("RAZONES:"):
+                        razones = line.split(":", 1)[1].strip()
+                
+                # Si no encontró el formato por líneas, intentar con búsqueda general
+                if categoria == "desconocida" and "CATEGORÍA:" in texto_respuesta:
+                    import re
+                    # Buscar CATEGORÍA: algo
+                    match_cat = re.search(r'CATEGOR[IÍ]A:\s*([^\n,]+)', texto_respuesta)
+                    if match_cat:
+                        categoria = match_cat.group(1).strip()
+                    
+                    # Buscar CONFIANZA: número
+                    match_conf = re.search(r'CONFIANZA:\s*([\d\.]+)', texto_respuesta)
+                    if match_conf:
+                        try:
+                            confianza = float(match_conf.group(1)) / 100.0
+                        except:
+                            pass
+                    
+                    # Buscar RAZONES: texto
+                    match_raz = re.search(r'RAZONES:\s*(.+?)(?=\n\n|\Z)', texto_respuesta, re.DOTALL)
+                    if match_raz:
+                        razones = match_raz.group(1).strip()
+                
+                # Mostrar en consola con el formato deseado
+                print(f"\n{'='*50}")
+                print(f"📷 IMAGEN: {os.path.basename(ruta_imagen)}")
+                print(f"🏷️ CATEGORÍA: {categoria}")
+                print(f"🎯 CONFIANZA: {confianza*100:.1f}%")
+                print(f"📝 RAZONES: {razones}")
+                print(f"⏱️ TIEMPO: {elapsed_time:.2f}s")
+                print(f"{'='*50}")
                 
                 return {
                     "imagen": os.path.basename(ruta_imagen),
                     "ruta_completa": ruta_imagen,
                     "categoria": categoria,
-                    "confianza": confianza,
+                    "confianza": confianza,  # Float entre 0 y 1
                     "razones": razones,
                     "respuesta_completa": texto_respuesta,
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": datetime.now().isoformat(),
+                    "tiempo_procesamiento": elapsed_time
                 }
             else:
+                print(f"❌ Error HTTP {respuesta.status_code} para {ruta_imagen}")
                 return None
+                
         except Exception as e:
-            print(f"Error clasificando {ruta_imagen}: {e}")
+            print(f"❌ Error procesando {ruta_imagen}: {str(e)}")
+            import traceback
+            traceback.print_exc()
             return None
     
     def mostrar_resumen_en_ui(self, resultado):
         """Inserta un resumen legible en el área de texto."""
-        self.result_area.insert("end", f"📷 {resultado['imagen']}\n")
-        self.result_area.insert("end", f"   🏷 Categoría: {resultado['categoria']}\n")
-        self.result_area.insert("end", f"   📊 Confianza: {resultado['confianza']}\n")
-        self.result_area.insert("end", f"   💬 Razones: {resultado['razones'][:150]}...\n\n")
+        self.result_area.insert("end", f"   {resultado['imagen']}\n")
+        self.result_area.insert("end", f"   Categoría: {resultado['categoria']}\n")
+        # CORREGIDO: Mostrar como porcentaje en lugar del float
+        self.result_area.insert("end", f"   Confianza: {resultado['confianza']*100:.1f}%\n")
+        self.result_area.insert("end", f"   Razones: {resultado['razones'][:150]}...\n\n")
         self.result_area.see("end")
 
     def finalizar_clasificacion(self):
@@ -344,8 +431,9 @@ class VisionXApp(ctk.CTk):
                             f.write(f"{idx}. {res['imagen']} - ERROR: {res['error']}\n\n")
                         else:
                             f.write(f"{idx}. Imagen: {res['imagen']}\n")
+                            # CORREGIDO: Mostrar como porcentaje en el TXT también
                             f.write(f"   Categoría: {res['categoria']}\n")
-                            f.write(f"   Confianza: {res['confianza']}\n")
+                            f.write(f"   Confianza: {res['confianza']*100:.1f}%\n")
                             f.write(f"   Razones: {res['razones']}\n")
                             f.write(f"   Respuesta completa: {res['respuesta_completa']}\n\n")
                 messagebox.showinfo("Éxito", f"Resultados guardados en:\n{archivo}")
