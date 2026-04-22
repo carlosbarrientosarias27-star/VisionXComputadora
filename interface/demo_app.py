@@ -5,7 +5,9 @@ import base64
 import requests
 import json
 import customtkinter as ctk
+from tkinter import filedialog, messagebox
 from PIL import Image
+from datetime import datetime
 
 # --- ARREGLO DE IMPORTACIÓN PARA CONFIG.PY ---
 directorio_actual = os.path.dirname(os.path.abspath(__file__))
@@ -18,9 +20,20 @@ try:
 except ModuleNotFoundError:
     class config:
         CATEGORIAS_POR_DEFECTO = ['gato', 'perro', 'pajaro', 'auto',
-    'comida', 'persona', 'flor', 'arbol',
-    'casa', 'desconocido']
+                                  'comida', 'persona', 'flor', 'arbol',
+                                  'casa', 'desconocido']
         OLLAMA_URL = "http://localhost:11434/api/generate"
+        MODELO_VISION = "llava"
+        TIMEOUT = 120
+        CONFIG_CONSISTENTE = {
+            "temperature": 0.2,
+            "seed": 42,
+            "num_predict": 150,
+            "top_k": 40,
+            "top_p": 0.9,
+            "repeat_penalty": 1.1,
+            "stream": False
+        }
 
 # Configuración de apariencia
 ctk.set_appearance_mode("dark")
@@ -34,7 +47,10 @@ class VisionXApp(ctk.CTk):
         self.geometry("1150x750")
         self.configure(fg_color="#181818")
 
-        self.imagenes_seleccionadas = [] # Estado de las imágenes
+        self.imagenes_seleccionadas = []    
+        self.resultados_clasificacion = []  
+        self.clasificando = False          
+
 
         # --- UI LAYOUT ---
         self.setup_ui()
@@ -52,7 +68,6 @@ class VisionXApp(ctk.CTk):
 
         # Badge de estado con el icono de check como en la imagen
         self.status_badge = ctk.CTkLabel(self.header, text="✓ Ollama listo", text_color="#4cd137", font=ctk.CTkFont(size=12))
-        
         self.status_badge.pack()
 
         # Contenedor Principal
@@ -136,13 +151,15 @@ class VisionXApp(ctk.CTk):
                                         fg_color="#44bd32", hover_color="#2ecc71")
         self.classify_btn.pack(fill="x", padx=20, pady=20)
 
-    # --- TUS FUNCIONES DE LÓGICA INTEGRADAS ---
     def setup_logic(self):
         self.add_btn.configure(command=self.agregar_categoria_manual)
         self.select_btn.configure(command=self.seleccionar_imagenes)
         self.clear_btn.configure(command=self.limpiar_imagenes)
         self.classify_btn.configure(command=self.iniciar_clasificacion)
+        self.btn_json.configure(command=self.guardar_json)
+        self.btn_txt.configure(command=self.guardar_txt)
 
+    # ---------- MANEJO DE CATEGORÍAS ----------
     def agregar_categoria_manual(self):
         nueva = self.cat_entry.get().strip()
         if nueva:
@@ -161,6 +178,7 @@ class VisionXApp(ctk.CTk):
         self.cat_display.delete("0.0", "end")
         self.cat_display.insert("0.0", presets.get(tipo, "desconocido"))
 
+    # ---------- MANEJO DE IMÁGENES ----------
     def seleccionar_imagenes(self):
         files = ctk.filedialog.askopenfilenames(title="Seleccionar imágenes",
                                                 filetypes=[("Imágenes", "*.jpg *.jpeg *.png *.webp")])
@@ -172,63 +190,168 @@ class VisionXApp(ctk.CTk):
         self.imagenes_seleccionadas = []
         self.drop_lbl.configure(text="No hay imágenes seleccionadas", text_color="#7f8c8d")
 
+    # ---------- CLASIFICACIÓN ----------
     def iniciar_clasificacion(self):
-
-        self.result_area.delete("0.0", "end")
-
-        """Función que se ejecuta al pulsar el botón 🚀 CLASIFICAR"""
+        if self.clasificando:
+            return
         if not self.imagenes_seleccionadas:
-            # Si no hay imágenes, avisamos en el cuadro de resultados
+            self.result_area.delete("0.0", "end")
             self.result_area.insert("0.0", "❌ ERROR: No has seleccionado ninguna imagen.\n")
             self.result_area.insert("end", "Haz clic en '📁 Seleccionar' primero.")
             return
 
-        # Si hay imágenes, mostramos un mensaje de carga
+        # Limpiar resultados anteriores
+        self.resultados_clasificacion = []
+        self.result_area.delete("0.0", "end")
         self.result_area.insert("0.0", "🚀 INICIANDO PROCESO...\n")
         self.result_area.insert("end", f"----------------------------\n")
         self.result_area.insert("end", f"📸 Imágenes detectadas: {len(self.imagenes_seleccionadas)}\n")
         self.result_area.insert("end", f"🏷 Categorías: {self.cat_display.get('0.0', 'end').strip()}\n")
         self.result_area.insert("end", f"----------------------------\n")
-        self.result_area.insert("end", "⏳ Conectando con Ollama (esto puede tardar)...")
-       
-        hilo = threading.Thread(target=self.ejecutar_peticion_ollama, daemon=True)
+
+        # Deshabilitar botón durante la clasificación
+        self.classify_btn.configure(state="disabled", text="⏳ CLASIFICANDO...")
+        self.clasificando = True
+
+        hilo = threading.Thread(target=self.clasificar_todas, daemon=True)
         hilo.start()
-        
 
-    def ejecutar_peticion_ollama(self, indice_imagen=0):
+    def clasificar_todas(self):
+        categorias_str = self.cat_display.get("0.0", "end").strip()
+        total = len(self.imagenes_seleccionadas)
+        
+        for idx, ruta in enumerate(self.imagenes_seleccionadas):
+            # Actualizar UI (desde el hilo principal)
+            self.after(0, lambda i=idx+1, t=total: self.result_area.insert("end", f"🖼 Procesando imagen {i}/{t}...\n"))
+            
+            resultado = self.clasificar_una_imagen(ruta, categorias_str)
+            if resultado:
+                self.resultados_clasificacion.append(resultado)
+                # Mostrar resumen en el área de resultados
+                self.after(0, lambda r=resultado: self.mostrar_resumen_en_ui(r))
+            else:
+                # Error en la clasificación, añadir un registro de error
+                self.resultados_clasificacion.append({
+                    "imagen": os.path.basename(ruta),
+                    "error": "No se pudo obtener respuesta de Ollama",
+                    "timestamp": datetime.now().isoformat()
+                })
+                self.after(0, lambda: self.result_area.insert("end", f"❌ Error con {os.path.basename(ruta)}\n"))
+        
+        # Finalizar
+        self.after(0, self.finalizar_clasificacion)
+    
+    def clasificar_una_imagen(self, ruta_imagen, categorias_str):
+        """Envía una imagen a Ollama y devuelve un diccionario con los resultados."""
         try:
-            # Usamos la primera imagen seleccionada
-           ruta_imagen = self.imagenes_seleccionadas[indice_imagen]
-            
-            # 1. Convertir imagen a Base64 (Fundamental para que Ollama la vea)
-           with open(ruta_imagen, "rb") as f:
+            with open(ruta_imagen, "rb") as f:
                 img_base64 = base64.b64encode(f.read()).decode('utf-8')
-
-            # 2. Configurar el envío
-           categorias = self.cat_display.get("0.0", "end").strip()
-           payload = {
-                      "model": config.MODELO_VISION,  # ✅ Usa 'llava' desde config.py
-                      "prompt": f"Clasifica esta imagen en una de estas categorías: {categorias}. Responde: CATEGORIA, CONFIANZA y RAZONES.",
-                      "images": [img_base64],
-                       **config.CONFIG_CONSISTENTE  # ✅ Desempaqueta temperature, seed, num_predict, top_k, top_p, repeat_penalty, stream
-}
-
-            # 3. Petición a Ollama
-           respuesta = requests.post(config.OLLAMA_URL, json=payload, timeout=config.TIMEOUT)
             
-            # 4. Mostrar resultado en TU result_area (Limpiando lo anterior)
-        
-           if respuesta.status_code == 200:
-            nombre_img = os.path.basename(ruta_imagen)
-            self.result_area.insert("end", f"\n📷 [{indice_imagen+1}/{len(self.imagenes_seleccionadas)}] {nombre_img}\n")
-           else:
-                self.result_area.insert("end", f"❌ Error de Ollama: {respuesta.status_code}\nRevisa que el modelo 'llava' esté descargado.")
-
+            prompt = f"Clasifica esta imagen en una de estas categorías: {categorias_str}. Responde en formato: CATEGORIA: <categoria>, CONFIANZA: <0-100>, RAZONES: <breve explicación>"
+            payload = {
+                "model": config.MODELO_VISION,
+                "prompt": prompt,
+                "images": [img_base64],
+                **config.CONFIG_CONSISTENTE
+            }
+            
+            respuesta = requests.post(config.OLLAMA_URL, json=payload, timeout=config.TIMEOUT)
+            if respuesta.status_code == 200:
+                data = respuesta.json()
+                texto_respuesta = data.get("response", "").strip()
+                
+                # Extracción simple (puedes mejorar el parsing)
+                categoria = "desconocida"
+                confianza = "N/A"
+                razones = texto_respuesta
+                # Intento de parseo básico
+                if "CATEGORIA:" in texto_respuesta:
+                    partes = texto_respuesta.split(",")
+                    for p in partes:
+                        if "CATEGORIA:" in p:
+                            categoria = p.split("CATEGORIA:")[1].strip()
+                        elif "CONFIANZA:" in p:
+                            confianza = p.split("CONFIANZA:")[1].strip()
+                        elif "RAZONES:" in p:
+                            razones = p.split("RAZONES:")[1].strip()
+                
+                return {
+                    "imagen": os.path.basename(ruta_imagen),
+                    "ruta_completa": ruta_imagen,
+                    "categoria": categoria,
+                    "confianza": confianza,
+                    "razones": razones,
+                    "respuesta_completa": texto_respuesta,
+                    "timestamp": datetime.now().isoformat()
+                }
+            else:
+                return None
         except Exception as e:
-          
-            self.result_area.insert("end", f"❌ Error crítico: {str(e)}")
-        
+            print(f"Error clasificando {ruta_imagen}: {e}")
+            return None
+    
+    def mostrar_resumen_en_ui(self, resultado):
+        """Inserta un resumen legible en el área de texto."""
+        self.result_area.insert("end", f"📷 {resultado['imagen']}\n")
+        self.result_area.insert("end", f"   🏷 Categoría: {resultado['categoria']}\n")
+        self.result_area.insert("end", f"   📊 Confianza: {resultado['confianza']}\n")
+        self.result_area.insert("end", f"   💬 Razones: {resultado['razones'][:150]}...\n\n")
         self.result_area.see("end")
+
+    def finalizar_clasificacion(self):
+        self.clasificando = False
+        self.classify_btn.configure(state="normal", text="🚀 CLASIFICAR")
+        self.result_area.insert("end", "✅ CLASIFICACIÓN COMPLETADA.\n")
+        self.result_area.insert("end", "Puedes guardar los resultados usando los botones 📄 JSON o 📝 TXT.\n")
+        self.status_badge.configure(text="✓ Clasificación lista", text_color="#4cd137")
+        
+
+    # ---------- GUARDADO DE RESULTADOS ----------
+    def guardar_json(self):
+        if not self.resultados_clasificacion:
+            messagebox.showwarning("Sin datos", "No hay resultados de clasificación para guardar.")
+            return
+        archivo = filedialog.asksaveasfilename(
+            defaultextension=".json",
+            filetypes=[("Archivos JSON", "*.json"), ("Todos los archivos", "*.*")],
+            title="Guardar resultados como JSON"
+        )
+        if archivo:
+            try:
+                with open(archivo, "w", encoding="utf-8") as f:
+                    json.dump(self.resultados_clasificacion, f, indent=4, ensure_ascii=False)
+                messagebox.showinfo("Éxito", f"Resultados guardados en:\n{archivo}")
+            except Exception as e:
+                messagebox.showerror("Error", f"No se pudo guardar el archivo JSON:\n{str(e)}")
+
+    def guardar_txt(self):
+        if not self.resultados_clasificacion:
+            messagebox.showwarning("Sin datos", "No hay resultados de clasificación para guardar.")
+            return
+        archivo = filedialog.asksaveasfilename(
+            defaultextension=".txt",
+            filetypes=[("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*")],
+            title="Guardar resultados como TXT"
+        )
+        if archivo:
+            try:
+                with open(archivo, "w", encoding="utf-8") as f:
+                    f.write("RESULTADOS DE CLASIFICACIÓN\n")
+                    f.write(f"Generado: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                    f.write("="*60 + "\n\n")
+                    for idx, res in enumerate(self.resultados_clasificacion, 1):
+                        if "error" in res:
+                            f.write(f"{idx}. {res['imagen']} - ERROR: {res['error']}\n\n")
+                        else:
+                            f.write(f"{idx}. Imagen: {res['imagen']}\n")
+                            f.write(f"   Categoría: {res['categoria']}\n")
+                            f.write(f"   Confianza: {res['confianza']}\n")
+                            f.write(f"   Razones: {res['razones']}\n")
+                            f.write(f"   Respuesta completa: {res['respuesta_completa']}\n\n")
+                messagebox.showinfo("Éxito", f"Resultados guardados en:\n{archivo}")
+            except Exception as e:
+                messagebox.showerror("Error", f"No se pudo guardar el archivo TXT:\n{str(e)}")
+
 
 if __name__ == "__main__":
     app = VisionXApp()
