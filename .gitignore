@@ -7,3 +7,14 @@ __pycache__
 logs/*.json
 logs/*.txt
 !logs/.gitkeep
+
+# Ignorar contenido de resultados en cualquier subcarpeta pero mantener carpetas
+resultados/**/json/*
+resultados/**/txt/*
+
+# Asegurar que los .gitkeep se mantengan
+!resultados/**/json/.gitkeep
+!resultados/**/txt/.gitkeep
+
+# El archivo suelto al final
+resultados/clasificacion.json

@@ -1,0 +1,92 @@
+[
+    {
+        "imagen": "foto1.jpg",
+        "ruta_completa": "D:/Cursos/2026/Tareas/Codigo Heredado/VisioXComputadora/img/foto1.jpg",
+        "categoria": "GATO",
+        "confianza": 0.955,
+        "razones": "La imagen muestra un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría, como ser una persona o un perro. El gato está sentado en el suelo, lo que también evidencia que no es una casa de mamiferos, ni a la vez, un animal volador o una flor. La imagen es clara y nítida, lo que facilita la identificación del gato con seguridad.",
+        "respuesta_completa": "CATEGORÍA: GATO\nCONFIANZA: 95.5\nRAZONES: La imagen muestra un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría, como ser una persona o un perro. El gato está sentado en el suelo, lo que también evidencia que no es una casa de mamiferos, ni a la vez, un animal volador o una flor. La imagen es clara y nítida, lo que facilita la identificación del gato con seguridad.",
+        "timestamp": "2026-04-22T16:47:46.790949",
+        "tiempo_procesamiento": 17.84262251853943
+    },
+    {
+        "imagen": "foto2.jpg",
+        "ruta_completa": "D:/Cursos/2026/Tareas/Codigo Heredado/VisioXComputadora/img/foto2.jpg",
+        "categoria": "GATO",
+        "confianza": 0.955,
+        "razones": "La imagen muestra un animal con características físicas típicas de los felinos domésticos, como las orejas puntiagudas y bigotes que se pueden ver claramente. Además, la postura del gato sugiere que es una especie de mamífero terrestre y no animal volador ni otro tipo de animal que se pueda identificar en la imagen.",
+        "respuesta_completa": "CATEGORÍA: GATO\nCONFIANZA: 95.5\nRAZONES: La imagen muestra un animal con características físicas típicas de los felinos domésticos, como las orejas puntiagudas y bigotes que se pueden ver claramente. Además, la postura del gato sugiere que es una especie de mamífero terrestre y no animal volador ni otro tipo de animal que se pueda identificar en la imagen.",
+        "timestamp": "2026-04-22T16:47:58.358926",
+        "tiempo_procesamiento": 11.564378499984741
+    },
+    {
+        "imagen": "foto3.jpg",
+        "ruta_completa": "D:/Cursos/2026/Tareas/Codigo Heredado/VisioXComputadora/img/foto3.jpg",
+        "categoria": "GATO",
+        "confianza": 0.955,
+        "razones": "La imagen muestra un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría. La coloración de la imagen es clara y se ve detalladamente a la cabeza del gato, lo cual permite identificarlo como un gato. No hay nada en la imagen que pueda relacionarse con otros animales o categorías como perros, pájaros, autos, comidas, personas, flores, árboles, casas, ni desconocidos.",
+        "respuesta_completa": "CATEGORÍA: GATO\nCONFIANZA: 95.5\nRAZONES: La imagen muestra un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría. La coloración de la imagen es clara y se ve detalladamente a la cabeza del gato, lo cual permite identificarlo como un gato. No hay nada en la imagen que pueda relacionarse con otros animales o categorías como perros, pájaros, autos, comidas, personas, flores, árboles, casas, ni desconocidos.",
+        "timestamp": "2026-04-22T16:48:12.557083",
+        "tiempo_procesamiento": 14.192518711090088
+    },
+    {
+        "imagen": "foto4.jpg",
+        "ruta_completa": "D:/Cursos/2026/Tareas/Codigo Heredado/VisioXComputadora/img/foto4.jpg",
+        "categoria": "Pajaro",
+        "confianza": 0.9,
+        "razones": "La imagen muestra un pájaro con plumas y una cresta negra en la cabeza, sin elementos que sugieran otra categoría.",
+        "respuesta_completa": "CATEGORÍA: Pajaro\nCONFIANZA: 90\nRAZONES: La imagen muestra un pájaro con plumas y una cresta negra en la cabeza, sin elementos que sugieran otra categoría.",
+        "timestamp": "2026-04-22T16:48:20.003518",
+        "tiempo_procesamiento": 7.439587831497192
+    },
+    {
+        "imagen": "foto5.jpg",
+        "ruta_completa": "D:/Cursos/2026/Tareas/Codigo Heredado/VisioXComputadora/img/foto5.jpg",
+        "categoria": "PERRO",
+        "confianza": 0.9,
+        "razones": "La imagen muestra claramente un perro con una coloración típica y detalles que permiten reconocerlo como tal. También hay una especie de vegetación que parece ser un césped, lo que sugiere que es un entorno doméstico y no natural de los pájaros.",
+        "respuesta_completa": "CATEGORÍA: PERRO\nCONFIANZA: 90\nRAZONES: La imagen muestra claramente un perro con una coloración típica y detalles que permiten reconocerlo como tal. También hay una especie de vegetación que parece ser un césped, lo que sugiere que es un entorno doméstico y no natural de los pájaros.",
+        "timestamp": "2026-04-22T16:48:29.725201",
+        "tiempo_procesamiento": 9.716732263565063
+    },
+    {
+        "imagen": "foto6.jpg",
+        "ruta_completa": "D:/Cursos/2026/Tareas/Codigo Heredado/VisioXComputadora/img/foto6.jpg",
+        "categoria": "Pájaro",
+        "confianza": 0.99,
+        "razones": "La imagen muestra un pajarito pequeño con patas cortas y plumaje típico, que incluye tonos de blanco, negro y rojo. No hay indicios visibles de gatos, perros, autos, comidas, personas, flores, árboles, casas ni desconocidos. La imagen es un ejemplo claro de un pájaro.",
+        "respuesta_completa": "CATEGORÍA: Pájaro\nCONFIANZA: 99\nRAZONES: La imagen muestra un pajarito pequeño con patas cortas y plumaje típico, que incluye tonos de blanco, negro y rojo. No hay indicios visibles de gatos, perros, autos, comidas, personas, flores, árboles, casas ni desconocidos. La imagen es un ejemplo claro de un pájaro.",
+        "timestamp": "2026-04-22T16:48:40.681537",
+        "tiempo_procesamiento": 10.950444221496582
+    },
+    {
+        "imagen": "foto7.jpg",
+        "ruta_completa": "D:/Cursos/2026/Tareas/Codigo Heredado/VisioXComputadora/img/foto7.jpg",
+        "categoria": "Perro",
+        "confianza": 0.95,
+        "razones": "La imagen muestra un perro de raza inuido en un entorno silencioso y solitario, con características físicas comunes en las razas del grupo husky. El animal tiene una piel gruesa y una coloración típica de algunas razas de perro como el Husky Siberiano o el Perro do inu. No hay elementos que sugieran que sea otro tipo de animal, como un gato o un ave.",
+        "respuesta_completa": "CATEGORÍA: Perro\nCONFIANZA: 95\nRAZONES: La imagen muestra un perro de raza inuido en un entorno silencioso y solitario, con características físicas comunes en las razas del grupo husky. El animal tiene una piel gruesa y una coloración típica de algunas razas de perro como el Husky Siberiano o el Perro do inu. No hay elementos que sugieran que sea otro tipo de animal, como un gato o un ave.",
+        "timestamp": "2026-04-22T16:48:52.840148",
+        "tiempo_procesamiento": 12.15422797203064
+    },
+    {
+        "imagen": "foto8.jpg",
+        "ruta_completa": "D:/Cursos/2026/Tareas/Codigo Heredado/VisioXComputadora/img/foto8.jpg",
+        "categoria": "Perro",
+        "confianza": 0.95,
+        "razones": "La imagen muestra claramente un perro doméstico con una piel de tricó y características faciales como ojos grandes, orejas triangulares y una nariz larga, que son propios de muchas razas caninas. Además, no hay elementos en la imagen que sugieran otra categoría.",
+        "respuesta_completa": "CATEGORÍA: Perro\nCONFIANZA: 95\nRAZONES: La imagen muestra claramente un perro doméstico con una piel de tricó y características faciales como ojos grandes, orejas triangulares y una nariz larga, que son propios de muchas razas caninas. Además, no hay elementos en la imagen que sugieran otra categoría.",
+        "timestamp": "2026-04-22T16:49:03.037198",
+        "tiempo_procesamiento": 10.191560745239258
+    },
+    {
+        "imagen": "foto9.jpg",
+        "ruta_completa": "D:/Cursos/2026/Tareas/Codigo Heredado/VisioXComputadora/img/foto9.jpg",
+        "categoria": "PERRO",
+        "confianza": 0.8,
+        "razones": "La imagen muestra un animal con una postura ereta y una carrera hacia adelante. El cachimbo tiene orejas erectas, una cabeza redondeada y bigotes más largos que los gatos. Además, el perro se encuentra en un entorno al aire libre con pasto y algo amarillo que podría ser flor o maíz, lo que indica que la imagen está capturando un momento en el exterior doméstico donde el animal se ha desplazado hacia adelante, una típica postura de perro cuando corre.",
+        "respuesta_completa": "CATEGORÍA: PERRO\nCONFIANZA: 80\nRAZONES: La imagen muestra un animal con una postura ereta y una carrera hacia adelante. El cachimbo tiene orejas erectas, una cabeza redondeada y bigotes más largos que los gatos. Además, el perro se encuentra en un entorno al aire libre con pasto y algo amarillo que podría ser flor o maíz, lo que indica que la imagen está capturando un momento en el exterior doméstico donde el animal se ha desplazado hacia adelante, una típica postura de perro cuando corre.",
+        "timestamp": "2026-04-22T16:49:16.932119",
+        "tiempo_procesamiento": 13.890783786773682
+    }
+]

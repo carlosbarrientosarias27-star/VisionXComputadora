@@ -199,6 +199,9 @@ class VisionXApp(ctk.CTk):
             self.result_area.insert("0.0", "❌ ERROR: No has seleccionado ninguna imagen.\n")
             self.result_area.insert("end", "Haz clic en '📁 Seleccionar' primero.")
             return
+        
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        self.carpeta_sesion_actual = os.path.join(os.getcwd(), "resultados", f"proceso_{timestamp}")
 
         # Limpiar resultados anteriores
         self.resultados_clasificacion = []
@@ -229,6 +232,9 @@ class VisionXApp(ctk.CTk):
                 self.resultados_clasificacion.append(resultado)
                 # Mostrar resumen en el área de resultados
                 self.after(0, lambda r=resultado: self.mostrar_resumen_en_ui(r))
+                
+                # --- NUEVO: GUARDADO INDIVIDUAL POR CADA IMAGEN ---
+                self.auto_guardar_individual(resultado) 
             else:
                 # Error en la clasificación, añadir un registro de error
                 self.resultados_clasificacion.append({
@@ -238,8 +244,41 @@ class VisionXApp(ctk.CTk):
                 })
                 self.after(0, lambda: self.result_area.insert("end", f"❌ Error con {os.path.basename(ruta)}\n"))
         
-        # Finalizar
+        # Finalizar el proceso general
         self.after(0, self.finalizar_clasificacion)
+    
+    def auto_guardar_individual(self, res):
+        """Guarda los resultados de cada imagen en una carpeta común fija."""
+        try:
+            # Usamos la carpeta definida al inicio del proceso
+            folder_session = self.carpeta_sesion_actual
+            
+            # Crear las subcarpetas json y txt dentro de esa carpeta única
+            for sub in ["json", "txt"]:
+                path = os.path.join(folder_session, sub)
+                if not os.path.exists(path):
+                    os.makedirs(path)
+
+            nombre_limpio = os.path.splitext(res['imagen'])[0]
+            
+            # Guardar JSON individual
+            ruta_json = os.path.join(folder_session, "json", f"{nombre_limpio}.json")
+            with open(ruta_json, "w", encoding="utf-8") as f:
+                json.dump(res, f, indent=4, ensure_ascii=False)
+
+            # Guardar TXT individual
+            ruta_txt = os.path.join(folder_session, "txt", f"{nombre_limpio}.txt")
+            with open(ruta_txt, "w", encoding="utf-8") as f:
+                f.write(f"RESULTADO: {res['imagen']}\n")
+                f.write(f"Fecha: {res['timestamp']}\n")
+                f.write("-" * 30 + "\n")
+                f.write(f"Categoría: {res['categoria']}\n")
+                f.write(f"Confianza: {res['confianza']*100:.1f}%\n")
+                f.write(f"Razones: {res['razones']}\n")
+                
+            print(f"[AUTO] Guardado en carpeta común: {nombre_limpio}")
+        except Exception as e:
+            print(f"[ERROR AUTO-GUARDADO] {e}")
     
     def clasificar_una_imagen(self, ruta_imagen, categorias_str):
         """Envía una imagen a Ollama y devuelve un diccionario con los resultados."""
@@ -388,23 +427,36 @@ class VisionXApp(ctk.CTk):
     def finalizar_clasificacion(self):
         self.clasificando = False
         self.classify_btn.configure(state="normal", text="🚀 CLASIFICAR")
-
-        # --- CÓDIGO PARA AUTO-GUARDADO ---
+        
+        # --- LÓGICA DE AUTO-GUARDADO AUTOMÁTICO ---
+        mensaje_adicional = ""
         if self.resultados_clasificacion:
-            folder = os.path.join(os.getcwd(), "resultados")
-        if not os.path.exists(folder):
-            os.makedirs(folder)
-        
-        nombre_base = f"proceso_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        ruta_final = os.path.join(folder, nombre_base)
-        
-        with open(ruta_final, "w", encoding="utf-8") as f:
-            json.dump(self.resultados_clasificacion, f, indent=4, ensure_ascii=False)
-        print(f"Auto-guardado en: {ruta_final}") 
-        
-        self.result_area.insert("end", "✅ CLASIFICACIÓN COMPLETADA.\n")
-        self.result_area.insert("end", "Puedes guardar los resultados usando los botones 📄 JSON o 📝 TXT.\n")
+            try:
+                # Crear carpeta 'resultados' si no existe
+                folder = os.path.join(os.getcwd(), "resultados")
+                if not os.path.exists(folder):
+                    os.makedirs(folder)
+                
+                # Generar nombre único basado en la fecha y hora
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                nombre_archivo = f"clasificacion_{timestamp}.json"
+                ruta_final = os.path.join(folder, nombre_archivo)
+                
+                # Guardar el JSON
+                with open(ruta_final, "w", encoding="utf-8") as f:
+                    json.dump(self.resultados_clasificacion, f, indent=4, ensure_ascii=False)
+                
+                mensaje_adicional = f"Y AUTO-GUARDADA en: /resultados/{nombre_archivo}"
+                print(f"[AUTO-SAVE] Resultados guardados en: {ruta_final}")
+            except Exception as e:
+                mensaje_adicional = "(Error en auto-guardado)"
+                print(f"[ERROR] No se pudo auto-guardar: {e}")
+
+        # Actualización de la interfaz
+        self.result_area.insert("end", f"✅ CLASIFICACIÓN COMPLETADA {mensaje_adicional}.\n")
+        self.result_area.insert("end", "Puedes exportar copias adicionales usando 📄 JSON o 📝 TXT.\n")
         self.status_badge.configure(text="✓ Clasificación lista", text_color="#4cd137")
+        self.result_area.see("end")
         
 
     # ---------- GUARDADO DE RESULTADOS ----------
@@ -449,7 +501,6 @@ class VisionXApp(ctk.CTk):
                             f.write(f"   Categoría: {res['categoria']}\n")
                             f.write(f"   Confianza: {res['confianza']*100:.1f}%\n")
                             f.write(f"   Razones: {res['razones']}\n")
-                            f.write(f"   Respuesta completa: {res['respuesta_completa']}\n\n")
                 messagebox.showinfo("Éxito", f"Resultados guardados en:\n{archivo}")
             except Exception as e:
                 messagebox.showerror("Error", f"No se pudo guardar el archivo TXT:\n{str(e)}")

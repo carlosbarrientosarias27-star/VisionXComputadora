@@ -1,0 +1,54 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # Permite que si una versión falla (como la 3.14-dev), las demás sigan
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14-dev"]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest pytest-cov bandit
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Lint with flake8
+      run: |
+        # Errores críticos de sintaxis y nombres indefinidos
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Advertencias de estilo (se muestra como salida pero no detiene el build si prefieres ser flexible)
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Security check with Bandit
+      run: |
+        # Escaneo de seguridad, ignorando la carpeta de tests para evitar ruidos
+        bandit -r . -x ./tests
+
+    - name: Test with pytest and coverage
+      run: |
+        # Ejecuta pruebas y genera reporte de cobertura XML
+        # He incluido --cov=. para que cubra tu código base según la estructura vista
+        pytest --cov=. --cov-report=xml
+
+    - name: Upload coverage artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report-${{ matrix.python-version }}
+        path: coverage.xml
