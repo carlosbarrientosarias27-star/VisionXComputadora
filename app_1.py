@@ -73,6 +73,7 @@ if __name__ == "__main__":
     carpeta_fotos = "img"
     carpeta_logs = "logs"
 
+
     
     if os.path.exists(carpeta_fotos):
         # Obtenemos la lista de todas las imágenes
@@ -95,13 +96,21 @@ if __name__ == "__main__":
                 duracion = fin - inicio
                 tiempos.append(duracion)
 
+                cat = resultado.get("categoria", "desconocido")
+                conf = resultado.get("confianza", 0)
+                razones = resultado.get("razones", "Sin explicación disponible")
+
                 nombre_base = os.path.splitext(archivo)[0]
-                ruta_log = f"{archivo}.json"
+
+                # Definimos las rutas de guardado
+                ruta_log_json = os.path.join(carpeta_logs, f"{nombre_base}.json")
                 ruta_log_txt = os.path.join(carpeta_logs, f"{nombre_base}.txt")
 
-                with open(ruta_log, "w", encoding="utf-8") as f_json:
+                # 1. Guardar el JSON
+                with open(ruta_log_json, "w", encoding="utf-8") as f_json:
                     json.dump(resultado, f_json, indent=4, ensure_ascii=False)
 
+                # 2. Guardar el TXT (Ahora 'cat', 'conf' y 'razones' ya están definidas)
                 with open(ruta_log_txt, "w", encoding="utf-8") as f_txt:
                     f_txt.write(f"INFORME DE CLASIFICACIÓN\n")
                     f_txt.write(f"{'='*30}\n")
@@ -112,10 +121,7 @@ if __name__ == "__main__":
                     f_txt.write(f"Razones: {razones}\n")
                     f_txt.write(f"{'='*30}\n")
 
-                # Mostrar resultado simplificado en consola
-                cat = resultado.get("categoria", "desconocido")
-                conf = resultado.get("confianza", 0)
-                razones = resultado.get("razones", "Sin explicación disponible")
+                # 3. Mostrar resultado en consola
                 print(f"✅ CATEGORÍA: {cat.upper()}")
                 print(f"🎯 CONFIANZA: {conf*100:.1f}%")
                 print(f"📝 RAZONES: {razones}") 

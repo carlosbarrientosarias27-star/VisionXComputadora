@@ -1,3 +1,8 @@
 __init__.py
 __pycache__
+.env
 
+# Ignorar contenido de resultados pero mantener la carpeta
+logs/*.json
+logs/*.txt
+!logs/.gitkeep
