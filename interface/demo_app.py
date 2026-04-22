@@ -190,40 +190,42 @@ class VisionXApp(ctk.CTk):
         self.result_area.insert("end", f"🏷 Categorías: {self.cat_display.get('0.0', 'end').strip()}\n")
         self.result_area.insert("end", f"----------------------------\n")
         self.result_area.insert("end", "⏳ Conectando con Ollama (esto puede tardar)...")
-        # Aquí es donde más adelante pondremos la lógica para llamar a la IA
-        print("Botón pulsado con éxito") 
+       
+        hilo = threading.Thread(target=self.ejecutar_peticion_ollama, daemon=True)
+        hilo.start()
+        
 
-    def ejecutar_peticion_ollama(self):
+    def ejecutar_peticion_ollama(self, indice_imagen=0):
         try:
             # Usamos la primera imagen seleccionada
-            ruta_imagen = self.imagenes_seleccionadas[0]
+           ruta_imagen = self.imagenes_seleccionadas[indice_imagen]
             
             # 1. Convertir imagen a Base64 (Fundamental para que Ollama la vea)
-            with open(ruta_imagen, "rb") as f:
+           with open(ruta_imagen, "rb") as f:
                 img_base64 = base64.b64encode(f.read()).decode('utf-8')
 
             # 2. Configurar el envío
-            categorias = self.cat_display.get("0.0", "end").strip()
-            payload = {
-                "model": "llava", # Forzamos llava que es el que tiene visión
-                "prompt": f"Clasifica esta imagen en una de estas categorías: {categorias}. Responde: CATEGORIA, CONFIANZA y RAZONES.",
-                "images": [img_base64],
-                "stream": False
-            }
+           categorias = self.cat_display.get("0.0", "end").strip()
+           payload = {
+                      "model": config.MODELO_VISION,  # ✅ Usa 'llava' desde config.py
+                      "prompt": f"Clasifica esta imagen en una de estas categorías: {categorias}. Responde: CATEGORIA, CONFIANZA y RAZONES.",
+                      "images": [img_base64],
+                       **config.CONFIG_CONSISTENTE  # ✅ Desempaqueta temperature, seed, num_predict, top_k, top_p, repeat_penalty, stream
+}
 
             # 3. Petición a Ollama
-            respuesta = requests.post(config.OLLAMA_URL, json=payload, timeout=config.TIMEOUT)
+           respuesta = requests.post(config.OLLAMA_URL, json=payload, timeout=config.TIMEOUT)
             
             # 4. Mostrar resultado en TU result_area (Limpiando lo anterior)
-            self.result_area.delete("0.0", "end")
-            if respuesta.status_code == 200:
-                final = respuesta.json().get("response", "Sin respuesta")
-                self.result_area.insert("end", f"✅ ANALISIS COMPLETADO:\n\n{final}")
-            else:
+        
+           if respuesta.status_code == 200:
+            nombre_img = os.path.basename(ruta_imagen)
+            self.result_area.insert("end", f"\n📷 [{indice_imagen+1}/{len(self.imagenes_seleccionadas)}] {nombre_img}\n")
+           else:
                 self.result_area.insert("end", f"❌ Error de Ollama: {respuesta.status_code}\nRevisa que el modelo 'llava' esté descargado.")
 
         except Exception as e:
-            self.result_area.delete("0.0", "end")
+          
             self.result_area.insert("end", f"❌ Error crítico: {str(e)}")
         
         self.result_area.see("end")
