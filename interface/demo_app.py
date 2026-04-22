@@ -378,9 +378,12 @@ class VisionXApp(ctk.CTk):
                     if match_conf:
                         try:
                             confianza = float(match_conf.group(1)) / 100.0
-                        except:
-                            pass
-                    
+                        except (ValueError, TypeError):
+                            # Asignamos un valor por defecto en lugar de usar 'pass'
+                            # Esto evita el error B110 de Bandit y maneja el error explícitamente
+                            confianza = 0.0
+                            print(f"[DEBUG] No se pudo convertir la confianza: {match_conf.group(1)}")
+                        
                     # Buscar RAZONES: texto
                     match_raz = re.search(r'RAZONES:\s*(.+?)(?=\n\n|\Z)', texto_respuesta, re.DOTALL)
                     if match_raz:
