@@ -1,71 +1,71 @@
-# Documentación de Cambios: Sistema de Clasificación Local (v1.1)
-Esta versión de app_1.py mejora la capacidad del script para procesar múltiples imágenes de forma secuencial, garantizando la persistencia de los datos y la correcta codificación del idioma español.
+# Documentación de Cambios: Sistema de Clasificación Local con Logs Duales
+Esta guía detalla la evolución del script app_1.py desde su versión inicial hasta la implementación actual, que incluye procesamiento por lotes, exportación de resultados y soporte completo en español.
 
-## 📋 Resumen de Cambios
-Soporte Multi-Archivo: Transición de procesar una sola imagen a iterar sobre una carpeta completa.
-
-Sistema de Logging JSON: Exportación automática de cada resultado a la carpeta logs/.
-
-Internacionalización (Español): Refuerzo del prompt para asegurar respuestas en castellano.
-
-Manejo de Errores Robusto: Captura de excepciones mejorada para evitar interrupciones durante el proceso por lotes.
+## 📋 Resumen de la Versión Final
+El script ahora es capaz de escanear una carpeta de imágenes, procesarlas individualmente usando el modelo de visión de Ollama y generar dos tipos de informes (JSON y TXT) por cada archivo.
 
 ## 🛠️ Detalle de los Cambios Paso a Paso
 
-### 1. Refuerzo del Idioma y Formato (Función clasificar_imagen_local)
-Se modificó el prompt_texto para ser más explícito con el modelo de IA:
+### 1. Optimización del Prompt (Idioma y Formato)
+Se modificó la lógica interna de la función clasificar_imagen_local para asegurar resultados consistentes:
 
-Instrucción de Formato: Se definió un esquema JSON estricto ("categoria", "confianza", "razones").
+Forzado de Idioma: Se añadieron instrucciones explícitas (IMPORTANTE: La explicación de 'razones' debe ser en español) para evitar respuestas en inglés.
 
-Localización: Se añadió la instrucción específica IMPORTANTE: La explicación de 'razones' debe ser en español.
+Estructura JSON estricta: Se definió un esquema con las llaves categoria, confianza y razones para facilitar la lectura automática.
 
-Consistencia: Se incluyó el parámetro "format": "json" en el payload para forzar al modelo a devolver datos estructurados.
+### 2. Implementación de Procesamiento por Lotes (Batch)
 
-### 2. Automatización de la Carpeta de Logs
-En el bloque principal (if __name__ == "__main__":), se añadieron líneas para gestionar el almacenamiento:
+Se sustituyó la ejecución de una única imagen por un bucle for que automatiza el trabajo:
 
-Variable carpeta_logs: Se definió el directorio donde se guardarán los resultados.
+Escaneo de Directorio: El script busca todos los archivos en la carpeta img/.
 
-Creación Automática: Se utiliza os.makedirs (o validación previa) para asegurar que la carpeta existe antes de intentar escribir en ella.
+Filtro de Extensiones: Se añadió una validación para procesar únicamente archivos .jpg, .jpeg y .png.
 
-### 3. Implementación del Bucle de Procesamiento
-Se sustituyó la llamada única por un bucle for:
+### 3. Sistema de Persistencia Dual (Logs)
 
-Filtro de Extensiones: El script ahora busca activamente archivos .jpg, .jpeg y .png.
+Se implementó un sistema de guardado doble para cada imagen procesada:
 
-Gestión de Rutas: Uso de os.path.join para construir rutas de archivos compatibles con cualquier sistema operativo (Windows/Linux).
+Extracción de Nombre Base: Usamos os.path.splitext(archivo)[0] para obtener el nombre del archivo sin la extensión (ej. de foto1.jpg a foto1).
 
-### 4. Persistencia de Resultados (Escritura JSON)
-Después de procesar cada imagen, se implementó el guardado físico:
+Archivo JSON: Guarda la respuesta completa del modelo para uso técnico o integraciones futuras.
 
-Pitón
-nombre_log = f"{archivo}.json"
-ruta_log = os.path.join(carpeta_logs, nombre_log)
+Archivo TXT: Crea un informe legible para humanos con el siguiente formato:
 
-with open(ruta_log, "w", encoding="utf-8") as f_json:
-    json.dump(resultado, f_json, indent=4, ensure_ascii=False)
-encoding="utf-8": Crucial para que los acentos y la "ñ" se guarden correctamente.
+Encabezado decorativo (===).
 
-ensure_ascii=False: Evita que los caracteres especiales se conviertan a códigos Unicode (ej: de \u00f1 a ñ).
+Datos clave (Archivo, Categoría en mayúsculas, % de confianza, Tiempo de ejecución).
 
-indent=4: Hace que los archivos generados sean legibles para humanos.
+Explicación detallada de las razones.
 
-### 5. Interfaz de Terminal Mejorada
-Se actualizó la salida por consola para mostrar la información completa extraída:
+### 4. Codificación y Robustez
+UTF-8: Se configuró encoding="utf-8" en todas las aperturas de archivos para que las tildes y eñes se guarden correctamente.
 
-Categoría: Se muestra en mayúsculas (.upper()).
+Manejo de Tiempos: Se integró el módulo time para calcular cuánto tarda el modelo en procesar cada imagen y mostrar un resumen final del lote.
 
-Confianza: Se formatea de decimal (0.85) a porcentaje (85.0%).
+## 📂 Estructura de Salida Generada
+Tras ejecutar el script, la carpeta logs/ contendrá:
 
-Razones: Se imprime la explicación detallada que antes se omitía.
+nombre_imagen.json → Datos estructurados.
 
-Métricas: Se mantiene el seguimiento del tiempo por imagen y el resumen total del lote.
+nombre_imagen.txt → Reporte de lectura rápida.
 
-## 🚀 Cómo ejecutar esta versión
-Asegúrate de tener la carpeta img/ con tus imágenes.
+Ejemplo de reporte TXT:
 
-Configura las variables en config.py (especialmente OLLAMA_URL y MODELO_VISION).
+Plaintext
+INFORME DE CLASIFICACIÓN
+==============================
+Archivo: gato.jpg
+Categoría: ANIMAL
+Confianza: 98.50%
+Tiempo: 2.15s
+Razones: Se observa un felino doméstico con pelaje atigrado sobre un sofá.
+==============================
 
-Ejecuta: python app_1.py.
+## 🚀 Cómo usar esta versión
+Coloca tus imágenes en la carpeta img/.
 
-Revisa la carpeta logs/ para ver los resultados individuales.
+Asegúrate de que Ollama esté corriendo con el modelo especificado en tu config.py.
+
+Ejecuta el script: python app_1.py.
+
+Revisa los resultados en la carpeta logs/.
