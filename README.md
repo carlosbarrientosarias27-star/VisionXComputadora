@@ -10,34 +10,52 @@ Sistema de clasificación de imágenes basado en visión por computadora, con in
 VisionXComputadora/
 ├── .github/
 │   └── workflows/
-│       └── CI.yml              # Pipeline de integración continua
-├── docs/                       # Documentación del proyecto
-├── img/                        # Imágenes de entrada
+│       └── CI.yml                    # Pipeline de integración continua
+├── docs/                             # Documentación del proyecto
+├── img/                              # Imágenes de entrada
 │   ├── foto1.jpg
 │   ├── foto2.jpg
 │   └── ... (foto1–foto9)
 ├── interface/
-│   └── demo_app.py             # Aplicación de demostración
-├── logs/                       # Registros de inferencia por imagen
+│   ├── demo_app.py                   # Aplicación de demostración principal
+│   └── demo1.py                      # Script de demostración auxiliar
+├── logs/                             # Registros de inferencia por imagen
 │   ├── foto1.json / foto1.txt
 │   ├── foto2.json / foto2.txt
 │   └── ... (foto1–foto9)
+├── Memoria Final/                    # Documentación y memoria final del proyecto
+├── proceso_20*/                      # Carpeta de proceso con resultados por ejecución
+│   ├── json/                         # Resultados estructurados en formato JSON
+│   │   ├── .gitkeep
+│   │   ├── foto1.json
+│   │   ├── foto2.json
+│   │   └── ... (foto1–foto9)
+│   ├── txt/                          # Resúmenes legibles en formato TXT
+│   │   ├── .gitkeep
+│   │   ├── foto1.txt
+│   │   ├── foto2.txt
+│   │   └── ... (foto1–foto9)
+│   ├── .gitkeep
+│   └── clasificacion*.json           # Archivo resumen de la clasificación del proceso
+├── resultados/                       # Resultados consolidados del sistema
 ├── src/
 │   └── Heredado/
 │       ├── __init__.py
-│       └── clasificacionImagenes.py   # Lógica principal de clasificación
+│       └── clasificacionImagenes.py  # Lógica principal de clasificación
 ├── tests/
+│   ├── __pycache__/
 │   ├── __init__.py
 │   ├── test_app_1.py
 │   └── test_config.py
-├── app_1.py                    # Punto de entrada principal
-├── config.py                   # Configuración global
-├── conftest.py                 # Fixtures de pytest
-├── .env                        # Variables de entorno (no versionado)
+├── app_1.py                          # Punto de entrada principal
+├── config.py                         # Configuración global
+├── conftest.py                       # Fixtures de pytest
+├── .coverage                         # Reporte de cobertura de tests
+├── .env                              # Variables de entorno (no versionado)
 ├── .gitignore
 ├── LICENSE
-├── pytest.ini                  # Configuración de pytest
-├── requirements.txt            # Dependencias del proyecto
+├── pytest.ini                        # Configuración de pytest
+├── requirements.txt                  # Dependencias del proyecto
 └── README.md
 ```
 
