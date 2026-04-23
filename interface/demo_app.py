@@ -203,10 +203,10 @@ class VisionXApp(ctk.CTk):
                     text=f"\n📦 {nombre_archivo}\n(+{len(files)-1} más)", 
                     compound="left",
                     anchor="w",
-                    justify="left",  # <--- AQUÍ FALTABA LA COMA
+                    justify="left",
                     text_color="#4cd137"
                 )
-
+                
                 # 5. Forzar que el widget se pegue a la esquina superior izquierda del contenedor
                 self.drop_lbl.pack(side="top", anchor="nw", padx=15, pady=10)
 
