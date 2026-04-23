@@ -146,10 +146,10 @@ class VisionXApp(ctk.CTk):
         self.result_area.pack(fill="both", expand=True, padx=20, pady=(15, 20))
 
         # --- BOTÓN INFERIOR ---
-        self.classify_btn = ctk.CTkButton(self, text="🚀 CLASIFICAR", height=50, 
-                                        font=ctk.CTkFont(size=15, weight="bold"),
-                                        fg_color="#44bd32", hover_color="#2ecc71")
-        self.classify_btn.pack(fill="x", padx=20, pady=20)
+        self.classify_btn = ctk.CTkButton(self, text="🚀 CLASIFICAR", height=38, 
+                                        font=ctk.CTkFont(size=13, weight="bold"),
+                                        fg_color="#44bd32", hover_color="#2ecc71", corner_radius=4, border_spacing=0)
+        self.classify_btn.pack(fill="x", padx=20, pady=(10,20))
 
     def setup_logic(self):
         self.add_btn.configure(command=self.agregar_categoria_manual)
