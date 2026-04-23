@@ -118,7 +118,7 @@ class VisionXApp(ctk.CTk):
         self.clear_btn.pack(side="right", fill="x", expand=True)
 
         self.drop_lbl = ctk.CTkLabel(img_card, text="No hay imágenes seleccionadas", text_color="#7f8c8d")
-        self.drop_lbl.pack(expand=True)
+        self.drop_lbl.pack(side="top", anchor="nw", padx=15, pady=10)
 
         # --- COLUMNA DERECHA (Panel de Resultados con Pestañas) ---
         self.right_col = ctk.CTkFrame(self.main_container, fg_color="#252525", corner_radius=10, border_width=1, border_color="#333")
@@ -184,11 +184,42 @@ class VisionXApp(ctk.CTk):
                                                 filetypes=[("Imágenes", "*.jpg *.jpeg *.png *.webp")])
         if files:
             self.imagenes_seleccionadas = list(files)
-            self.drop_lbl.configure(text=f"✅ {len(files)} imágenes seleccionadas", text_color="#4cd137")
+            primera_ruta = self.imagenes_seleccionadas[0]
+            nombre_archivo = os.path.basename(primera_ruta)
+           
+        try:
+                # Abrir y redimensionar la imagen para la vista previa
+                img_pil = Image.open(primera_ruta)
+                
+                # Mantener proporción (ajustar a un max de 200x200 o lo que gustes)
+                img_pil.thumbnail((60, 60)) 
+                
+                # Convertir a formato CTkImage
+                img_preview = ctk.CTkImage(light_image=img_pil, dark_image=img_pil, size=img_pil.size)
+
+                # Actualizar el label con la imagen y el nombre
+                self.drop_lbl.configure(
+                    image=img_preview, 
+                    text=f"\n📦 {nombre_archivo}\n(+{len(files)-1} más)", 
+                    compound="left",
+                    anchor="w",
+                    justify="left",  # <--- AQUÍ FALTABA LA COMA
+                    text_color="#4cd137"
+                )
+
+                # 5. Forzar que el widget se pegue a la esquina superior izquierda del contenedor
+                self.drop_lbl.pack(side="top", anchor="nw", padx=15, pady=10)
+
+                # Guardamos una referencia para que el recolector de basura no la borre
+                self.drop_lbl.image = img_preview 
+
+        except Exception as e:
+                self.drop_lbl.configure(text=f"Error al cargar vista previa: {e}", text_color="#e84118")
 
     def limpiar_imagenes(self):
         self.imagenes_seleccionadas = []
         self.drop_lbl.configure(text="No hay imágenes seleccionadas", text_color="#7f8c8d")
+        self.drop_lbl.image = None 
 
     # ---------- CLASIFICACIÓN ----------
     def iniciar_clasificacion(self):
