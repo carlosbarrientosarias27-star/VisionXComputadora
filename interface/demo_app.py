@@ -142,7 +142,7 @@ class VisionXApp(ctk.CTk):
         self.btn_txt.pack(side="left", padx=2, pady=2)
 
         # Área de texto con margen superior para dar el efecto de la imagen
-        self.result_area = ctk.CTkTextbox(self.right_col, fg_color="#1a1a1a", corner_radius=8, border_width=1, border_color="#333")
+        self.result_area = ctk.CTkTextbox(self.right_col, fg_color="#181717", corner_radius=8, border_width=1, border_color="#333")
         self.result_area.pack(fill="both", expand=True, padx=20, pady=(15, 20))
 
         # --- BOTÓN INFERIOR ---
