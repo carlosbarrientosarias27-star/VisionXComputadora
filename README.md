@@ -18,7 +18,7 @@ VisionXComputadora/
 │   └── ... (foto1–foto9)
 ├── interface/
 │   ├── demo_app.py                   # Aplicación de demostración principal
-│   └── demo1.py                      # Script de demostración auxiliar
+│   
 ├── logs/                             # Registros de inferencia por imagen
 │   ├── foto1.json / foto1.txt
 │   ├── foto2.json / foto2.txt
