@@ -1,71 +1,45 @@
-# Documentación de Cambios: Sistema de Clasificación Local con Logs Duales
-Esta guía detalla la evolución del script app_1.py desde su versión inicial hasta la implementación actual, que incluye procesamiento por lotes, exportación de resultados y soporte completo en español.
+# 📝 Registro de Cambios: VisionXApp (demo_app.py)
+Este documento resume las actualizaciones realizadas en la aplicación de clasificación de imágenes basada en IA local (Ollama).
 
-## 📋 Resumen de la Versión Final
-El script ahora es capaz de escanear una carpeta de imágenes, procesarlas individualmente usando el modelo de visión de Ollama y generar dos tipos de informes (JSON y TXT) por cada archivo.
+## 1. 🏗 Estructura y Robustez de Configuración
+Importación Blindada: Se añadió un bloque try-except para importar el archivo config.py. En caso de que no exista, la aplicación ahora genera automáticamente una clase interna con valores por defecto para evitar que el programa falle al iniciar.
 
-## 🛠️ Detalle de los Cambios Paso a Paso
+Ajuste de Path: Se implementó lógica para detectar el directorio raíz, permitiendo que la aplicación se ejecute correctamente independientemente de si se lanza desde la carpeta principal o una subcarpeta.
 
-### 1. Optimización del Prompt (Idioma y Formato)
-Se modificó la lógica interna de la función clasificar_imagen_local para asegurar resultados consistentes:
+## 2. 🎨 Mejoras en la Interfaz de Usuario (UI)
+Vista Previa de Imágenes: Al seleccionar archivos, el label drop_lbl ya no solo muestra texto; ahora genera una miniatura real (thumbnail) de la primera imagen seleccionada usando la librería PIL.
 
-Forzado de Idioma: Se añadieron instrucciones explícitas (IMPORTANTE: La explicación de 'razones' debe ser en español) para evitar respuestas en inglés.
+Estado del Servidor: Se añadió un status_badge dinámico ("✓ Ollama listo") para dar feedback visual sobre el estado del servicio.
 
-Estructura JSON estricta: Se definió un esquema con las llaves categoria, confianza y razones para facilitar la lectura automática.
+Panel de Resultados Estilizado: Se rediseñó la columna derecha para incluir una "barra de pestañas" simulada con botones para cambiar entre vistas de Resultados, JSON y TXT.
 
-### 2. Implementación de Procesamiento por Lotes (Batch)
+Modo Oscuro Persistente: Se configuró el tema dark y el color blue de customtkinter para una estética moderna y profesional.
 
-Se sustituyó la ejecución de una única imagen por un bucle for que automatiza el trabajo:
+## 3. 🧠 Lógica de Clasificación e IA
+Prompt Engineering Optimizado: Se mejoró el prompt enviado a Llava para exigir un formato de respuesta estricto:
 
-Escaneo de Directorio: El script busca todos los archivos en la carpeta img/.
+CATEGORÍA:
 
-Filtro de Extensiones: Se añadió una validación para procesar únicamente archivos .jpg, .jpeg y .png.
+CONFIANZA:
 
-### 3. Sistema de Persistencia Dual (Logs)
+RAZONES:
 
-Se implementó un sistema de guardado doble para cada imagen procesada:
+Extracción de Datos mediante Regex: Se implementó una lógica de extracción robusta que utiliza expresiones regulares (re) para capturar la categoría y la confianza, incluso si el modelo de lenguaje añade texto extra o varía ligeramente el formato.
 
-Extracción de Nombre Base: Usamos os.path.splitext(archivo)[0] para obtener el nombre del archivo sin la extensión (ej. de foto1.jpg a foto1).
+Manejo de Porcentajes: Se corrigió el tratamiento de la confianza. Ahora el sistema acepta valores de 0 a 100 y los convierte internamente a flotantes (0.0 a 1.0) para una gestión de datos más estandarizada.
 
-Archivo JSON: Guarda la respuesta completa del modelo para uso técnico o integraciones futuras.
+## 4. 📂 Gestión de Archivos y Auto-guardado
+Sistema de Sesiones: Al iniciar una clasificación, el sistema crea una carpeta única basada en el timestamp: resultados/proceso_YYYYMMDD_HHMMSS/.
 
-Archivo TXT: Crea un informe legible para humanos con el siguiente formato:
+Auto-guardado Granular: * Cada imagen procesada se guarda instantáneamente en carpetas individuales de /json y /txt.
 
-Encabezado decorativo (===).
+Esto evita la pérdida de datos si el proceso se interrumpe a mitad de una lista larga de imágenes.
 
-Datos clave (Archivo, Categoría en mayúsculas, % de confianza, Tiempo de ejecución).
+Exportación Global: Se mantuvieron y mejoraron las funciones guardar_json y guardar_txt para que el usuario pueda exportar el resumen completo de la sesión de forma manual con diálogos de guardado estándar.
 
-Explicación detallada de las razones.
+## 5. 🛠 Estabilidad y Depuración
+Multithreading: La clasificación se ejecuta en un hilo (threading.Thread) separado. Esto evita que la interfaz de la ventana se congele ("No responde") mientras la IA procesa las imágenes.
 
-### 4. Codificación y Robustez
-UTF-8: Se configuró encoding="utf-8" en todas las aperturas de archivos para que las tildes y eñes se guarden correctamente.
+Logs en Consola: Se añadieron impresiones detalladas ([DEBUG], [AUTO-SAVE]) para que el desarrollador pueda monitorear el flujo de datos y los tiempos de respuesta de la API en tiempo real.
 
-Manejo de Tiempos: Se integró el módulo time para calcular cuánto tarda el modelo en procesar cada imagen y mostrar un resumen final del lote.
-
-## 📂 Estructura de Salida Generada
-Tras ejecutar el script, la carpeta logs/ contendrá:
-
-nombre_imagen.json → Datos estructurados.
-
-nombre_imagen.txt → Reporte de lectura rápida.
-
-Ejemplo de reporte TXT:
-
-Plaintext
-INFORME DE CLASIFICACIÓN
-==============================
-Archivo: gato.jpg
-Categoría: ANIMAL
-Confianza: 98.50%
-Tiempo: 2.15s
-Razones: Se observa un felino doméstico con pelaje atigrado sobre un sofá.
-==============================
-
-## 🚀 Cómo usar esta versión
-Coloca tus imágenes en la carpeta img/.
-
-Asegúrate de que Ollama esté corriendo con el modelo especificado en tu config.py.
-
-Ejecuta el script: python app_1.py.
-
-Revisa los resultados en la carpeta logs/.
+Validación de Entradas: Se añadieron chequeos para asegurar que las rutas de imagen y las categorías sean válidas antes de intentar realizar la petición HTTP.
