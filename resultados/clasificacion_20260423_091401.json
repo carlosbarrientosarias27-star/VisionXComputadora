@@ -1,0 +1,47 @@
+[
+    {
+        "imagen": "foto1.jpg",
+        "error": "No se pudo obtener respuesta de Ollama",
+        "timestamp": "2026-04-23T09:13:44.930456"
+    },
+    {
+        "imagen": "foto2.jpg",
+        "error": "No se pudo obtener respuesta de Ollama",
+        "timestamp": "2026-04-23T09:13:46.968225"
+    },
+    {
+        "imagen": "foto3.jpg",
+        "error": "No se pudo obtener respuesta de Ollama",
+        "timestamp": "2026-04-23T09:13:49.051181"
+    },
+    {
+        "imagen": "foto4.jpg",
+        "error": "No se pudo obtener respuesta de Ollama",
+        "timestamp": "2026-04-23T09:13:51.134938"
+    },
+    {
+        "imagen": "foto5.jpg",
+        "error": "No se pudo obtener respuesta de Ollama",
+        "timestamp": "2026-04-23T09:13:53.213275"
+    },
+    {
+        "imagen": "foto6.jpg",
+        "error": "No se pudo obtener respuesta de Ollama",
+        "timestamp": "2026-04-23T09:13:55.284130"
+    },
+    {
+        "imagen": "foto7.jpg",
+        "error": "No se pudo obtener respuesta de Ollama",
+        "timestamp": "2026-04-23T09:13:57.356024"
+    },
+    {
+        "imagen": "foto8.jpg",
+        "error": "No se pudo obtener respuesta de Ollama",
+        "timestamp": "2026-04-23T09:13:59.418397"
+    },
+    {
+        "imagen": "foto9.jpg",
+        "error": "No se pudo obtener respuesta de Ollama",
+        "timestamp": "2026-04-23T09:14:01.462886"
+    }
+]
