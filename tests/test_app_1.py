@@ -12,7 +12,7 @@ from app_1 import clasificar_imagen_local
 @pytest.fixture(autouse=True)
 def setup_mocks(mocker):
     # Parchar las constantes directamente en el espacio de nombres de app_1
-    mocker.patch("app_1.MODELO_VISION", "llava")
+    mocker.patch("app_1.MODELO_VISION", "llava:7b")
     mocker.patch("app_1.OLLAMA_URL", "http://fake-url/api/generate")
     mocker.patch("app_1.TIMEOUT", 5)
     mocker.patch("app_1.CONFIG_CONSISTENTE", {"temperature": 0})
