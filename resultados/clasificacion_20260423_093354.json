@@ -1,0 +1,92 @@
+[
+    {
+        "imagen": "foto1.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto1.jpg",
+        "categoria": "GATO",
+        "confianza": 0.95,
+        "razones": "La imagen muestra un animal felino con características de una gata doméstica, como orejas puntiagudas y bigotes, que se puede ver con claridad. No hay elementos en la imagen que sugieran perro, pájaro, auto, comida, persona, flor, arbol, casa o desconocido.",
+        "respuesta_completa": "CATEGORÍA: GATO\nCONFIANZA: 95\nRAZONES: La imagen muestra un animal felino con características de una gata doméstica, como orejas puntiagudas y bigotes, que se puede ver con claridad. No hay elementos en la imagen que sugieran perro, pájaro, auto, comida, persona, flor, arbol, casa o desconocido.",
+        "timestamp": "2026-04-23T09:23:37.575061",
+        "tiempo_procesamiento": 85.4734435081482
+    },
+    {
+        "imagen": "foto2.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto2.jpg",
+        "categoria": "GATO",
+        "confianza": 0.95,
+        "razones": "La imagen muestra un animal que se asemeja a un gato doméstico por su aspecto físico, con orejas puntiagudas, cuello largo y una barba bien desarrollada. Además, la postura del gato, sentado en un sitio elevado, es común en fotografías de animales domésticos. El fondo de la imagen, que muestra un tronco de árbol con hojas y ramitas, no contiene elementos que puedan sugerir otra categoría como perro, pajaro o persona.",
+        "respuesta_completa": "CATEGORÍA: GATO\nCONFIANZA: 95\nRAZONES: La imagen muestra un animal que se asemeja a un gato doméstico por su aspecto físico, con orejas puntiagudas, cuello largo y una barba bien desarrollada. Además, la postura del gato, sentado en un sitio elevado, es común en fotografías de animales domésticos. El fondo de la imagen, que muestra un tronco de árbol con hojas y ramitas, no contiene elementos que puedan sugerir otra categoría como perro, pajaro o persona.",
+        "timestamp": "2026-04-23T09:25:11.787776",
+        "tiempo_procesamiento": 94.20544028282166
+    },
+    {
+        "imagen": "foto3.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto3.jpg",
+        "categoria": "GATO",
+        "confianza": 0.95,
+        "razones": "La imagen muestra claramente un animal con una piel rúgia, orejas puntiagudas y bigotes característicos de felinos. Además, el cuerpo y la postura del animal son típicamente del gato doméstico. No hay elementos que sugieran otra categoría como perro, pajaro, auto, comida, persona, flor, arbol, casa o desconocido.",
+        "respuesta_completa": "CATEGORÍA: GATO\nCONFIANZA: 95\nRAZONES: La imagen muestra claramente un animal con una piel rúgia, orejas puntiagudas y bigotes característicos de felinos. Además, el cuerpo y la postura del animal son típicamente del gato doméstico. No hay elementos que sugieran otra categoría como perro, pajaro, auto, comida, persona, flor, arbol, casa o desconocido.",
+        "timestamp": "2026-04-23T09:26:33.759078",
+        "tiempo_procesamiento": 81.96023678779602
+    },
+    {
+        "imagen": "foto4.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto4.jpg",
+        "categoria": "Pajaro",
+        "confianza": 0.905,
+        "razones": "La imagen muestra un pequeño pájaro con una cresta y una frente color clara, lo que caracteriza a ciertas especies de aves. Además, el pájaro tiene un patrón en las alas que recuerda a las palomas.",
+        "respuesta_completa": "CATEGORÍA: Pajaro\nCONFIANZA: 90.5\nRAZONES: La imagen muestra un pequeño pájaro con una cresta y una frente color clara, lo que caracteriza a ciertas especies de aves. Además, el pájaro tiene un patrón en las alas que recuerda a las palomas.",
+        "timestamp": "2026-04-23T09:27:43.871001",
+        "tiempo_procesamiento": 70.10868906974792
+    },
+    {
+        "imagen": "foto5.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto5.jpg",
+        "categoria": "Pájaro",
+        "confianza": 0.955,
+        "razones": "La imagen muestra un pájaro con plumaje verdoso y amarillo, ojos azules y una barba de color claro, lo que lo diferencia claramente de las otras categorías. Además, la postura de la avesita en el ramito también es típica del comportamiento de muchos pájaros.",
+        "respuesta_completa": "CATEGORÍA: Pájaro\nCONFIANZA: 95.5\nRAZONES: La imagen muestra un pájaro con plumaje verdoso y amarillo, ojos azules y una barba de color claro, lo que lo diferencia claramente de las otras categorías. Además, la postura de la avesita en el ramito también es típica del comportamiento de muchos pájaros.",
+        "timestamp": "2026-04-23T09:28:59.251708",
+        "tiempo_procesamiento": 75.3712637424469
+    },
+    {
+        "imagen": "foto6.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto6.jpg",
+        "categoria": "Pájaro",
+        "confianza": 0.955,
+        "razones": "La imagen muestra un pajarito con plumas coloridas y un cuerpo más ancho en el centro que en los extremos, lo que es típico de muchas aves, y no se ven elementos que indiquen que sea otra especie.",
+        "respuesta_completa": "CATEGORÍA: Pájaro\nCONFIANZA: 95.5\nRAZONES: La imagen muestra un pajarito con plumas coloridas y un cuerpo más ancho en el centro que en los extremos, lo que es típico de muchas aves, y no se ven elementos que indiquen que sea otra especie.",
+        "timestamp": "2026-04-23T09:30:09.419063",
+        "tiempo_procesamiento": 70.16207718849182
+    },
+    {
+        "imagen": "foto7.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto7.jpg",
+        "categoria": "PERRO",
+        "confianza": 0.955,
+        "razones": "La imagen muestra un animal que se asemeja más a un perro que a cualquier otro animal presentado en las opciones, ya que tiene una piel peluda, cuernos, y una postura eréctil que se caracteriza típicamente en los perros. Además, la postura del perro y su forma de sentarse sobre una roca en el bosque no hay nada que sugiere que sea un gato o otro animal.",
+        "respuesta_completa": "CATEGORÍA: PERRO\nCONFIANZA: 95.5\nRAZONES: La imagen muestra un animal que se asemeja más a un perro que a cualquier otro animal presentado en las opciones, ya que tiene una piel peluda, cuernos, y una postura eréctil que se caracteriza típicamente en los perros. Además, la postura del perro y su forma de sentarse sobre una roca en el bosque no hay nada que sugiere que sea un gato o otro animal.",
+        "timestamp": "2026-04-23T09:31:31.496502",
+        "tiempo_procesamiento": 82.06976056098938
+    },
+    {
+        "imagen": "foto8.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto8.jpg",
+        "categoria": "PERRO",
+        "confianza": 0.955,
+        "razones": "La imagen muestra un perro de raza golden retriever con una expresión facial agradable y una barba ligeramente escura en una foto estilo portrato en el que la nariz del animal está en primer plano.",
+        "respuesta_completa": "CATEGORÍA: PERRO\nCONFIANZA: 95.5\nRAZONES: La imagen muestra un perro de raza golden retriever con una expresión facial agradable y una barba ligeramente escura en una foto estilo portrato en el que la nariz del animal está en primer plano.",
+        "timestamp": "2026-04-23T09:32:39.695928",
+        "tiempo_procesamiento": 68.19458270072937
+    },
+    {
+        "imagen": "foto9.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto9.jpg",
+        "categoria": "Perro",
+        "confianza": 1.0,
+        "razones": "La imagen muestra un perro corriendo en una zona verde con una actitud de alegría y espontaneidad. El animal es un perro de raza que se caracteriza por su tamaño, ojos, morro, color y postura. Estos elementos claramente lo identifican como un perro y no otro tipo de animal.",
+        "respuesta_completa": "CATEGORÍA: Perro\nCONFIANZA: 100\nRAZONES: La imagen muestra un perro corriendo en una zona verde con una actitud de alegría y espontaneidad. El animal es un perro de raza que se caracteriza por su tamaño, ojos, morro, color y postura. Estos elementos claramente lo identifican como un perro y no otro tipo de animal.",
+        "timestamp": "2026-04-23T09:33:54.535136",
+        "tiempo_procesamiento": 74.83381581306458
+    }
+]
