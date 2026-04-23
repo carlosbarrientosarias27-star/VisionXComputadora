@@ -39,9 +39,8 @@ VisionXComputadora/
 │   └── clasificacion*.json           # Archivo resumen de la clasificación del proceso
 ├── resultados/                       # Resultados consolidados del sistema
 ├── src/
-│   └── Heredado/
-│       ├── __init__.py
-│       └── clasificacionImagenes.py  # Lógica principal de clasificación
+│     ├── __init__.py
+│     └── clasificacionImagenes.py  # Lógica principal de clasificación
 ├── tests/
 │   ├── __pycache__/
 │   ├── __init__.py
