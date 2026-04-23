@@ -1,0 +1,92 @@
+[
+    {
+        "imagen": "foto1.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto1.jpg",
+        "categoria": "GATO",
+        "confianza": 0.955,
+        "razones": "La imagen muestra un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría.",
+        "respuesta_completa": "CATEGORÍA: GATO\nCONFIANZA: 95.5\nRAZONES: La imagen muestra un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría.",
+        "timestamp": "2026-04-23T10:15:04.072906",
+        "tiempo_procesamiento": 86.93506288528442
+    },
+    {
+        "imagen": "foto2.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto2.jpg",
+        "categoria": "GATO",
+        "confianza": 0.955,
+        "razones": "La imagen muestra un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría.",
+        "respuesta_completa": "CATEGORÍA: GATO\nCONFIANZA: 95.5\nRAZONES: La imagen muestra un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría.",
+        "timestamp": "2026-04-23T10:16:16.682921",
+        "tiempo_procesamiento": 72.58886337280273
+    },
+    {
+        "imagen": "foto3.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto3.jpg",
+        "categoria": "GATO",
+        "confianza": 0.955,
+        "razones": "La imagen muestra un animal con características típicas de un gato doméstico, como orejas puntiagudas y bigotes, que se pueden ver claramente en la foto. No hay ninguna otra categoría que coincida con el contenido de la fotografía.",
+        "respuesta_completa": "CATEGORÍA: GATO\nCONFIANZA: 95.5\nRAZONES: La imagen muestra un animal con características típicas de un gato doméstico, como orejas puntiagudas y bigotes, que se pueden ver claramente en la foto. No hay ninguna otra categoría que coincida con el contenido de la fotografía.",
+        "timestamp": "2026-04-23T10:17:30.931194",
+        "tiempo_procesamiento": 74.23829984664917
+    },
+    {
+        "imagen": "foto4.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto4.jpg",
+        "categoria": "Pajaro",
+        "confianza": 0.955,
+        "razones": "La imagen muestra un pájaro con plumaje color verde y una cabeza negra, lo que se ajusta a la definición de pajaros como un grupo de aves con plumas.",
+        "respuesta_completa": "CATEGORÍA: Pajaro\nCONFIANZA: 95.5\nRAZONES: La imagen muestra un pájaro con plumaje color verde y una cabeza negra, lo que se ajusta a la definición de pajaros como un grupo de aves con plumas.",
+        "timestamp": "2026-04-23T10:18:37.768182",
+        "tiempo_procesamiento": 66.82995009422302
+    },
+    {
+        "imagen": "foto5.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto5.jpg",
+        "categoria": "Pajaro (Bird)",
+        "confianza": 0.985,
+        "razones": "La imagen muestra un pájaro con plumas de colores y una forma de posición en un ramito, lo que lo diferencia claramente de los animales mencionados como posibles opciones (gato o persona) ya que no hay indicios de ser un animal terrestre ni estar relacionado con la cocina o la comida.",
+        "respuesta_completa": "CATEGORÍA: Pajaro (Bird)\nCONFIANZA: 98.5\nRAZONES: La imagen muestra un pájaro con plumas de colores y una forma de posición en un ramito, lo que lo diferencia claramente de los animales mencionados como posibles opciones (gato o persona) ya que no hay indicios de ser un animal terrestre ni estar relacionado con la cocina o la comida.",
+        "timestamp": "2026-04-23T10:19:54.366641",
+        "tiempo_procesamiento": 76.58545136451721
+    },
+    {
+        "imagen": "foto6.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto6.jpg",
+        "categoria": "Pájaro",
+        "confianza": 0.955,
+        "razones": "La imagen muestra una aves con plumaje amarillo y negro, perteneciente al género de las cucaras (Cuculidae), que es un grupo de aves de tamaño mediano a grande, caracterizadas por sus largos picos curvas y hábitos alimenticios parásitos. La especie en la imagen es probablemente una Cuculoa.",
+        "respuesta_completa": "CATEGORÍA: Pájaro\nCONFIANZA: 95.5\nRAZONES: La imagen muestra una aves con plumaje amarillo y negro, perteneciente al género de las cucaras (Cuculidae), que es un grupo de aves de tamaño mediano a grande, caracterizadas por sus largos picos curvas y hábitos alimenticios parásitos. La especie en la imagen es probablemente una Cuculoa.",
+        "timestamp": "2026-04-23T10:21:12.069422",
+        "tiempo_procesamiento": 77.69621562957764
+    },
+    {
+        "imagen": "foto7.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto7.jpg",
+        "categoria": "PERRO",
+        "confianza": 0.805,
+        "razones": "La imagen muestra claramente un perro con una piel de color blanco y gris, con una postura ereta y una expresión fija. El animal no tiene ninguna semblanza que sugiera otra categoría.",
+        "respuesta_completa": "CATEGORÍA: PERRO\nCONFIANZA: 80.5\nRAZONES: La imagen muestra claramente un perro con una piel de color blanco y gris, con una postura ereta y una expresión fija. El animal no tiene ninguna semblanza que sugiera otra categoría.",
+        "timestamp": "2026-04-23T10:22:19.910747",
+        "tiempo_procesamiento": 67.83345127105713
+    },
+    {
+        "imagen": "foto8.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto8.jpg",
+        "categoria": "PERRO",
+        "confianza": 0.905,
+        "razones": "La imagen muestra un animal doméstico con una piel suave y algo liso, una estructura facial que incluye dos ojos, una nariz larga y recta, y una boca que se puede ver. Además, tiene una postura erguida con la cabeza ligeramente inclinada hacia un lado de su cuerpo. Estos detalles se relacionan con el perro en la imagen, lo cual lo hace ser un ejemplo claro de una persona con un perro.",
+        "respuesta_completa": "CATEGORÍA: PERRO\nCONFIANZA: 90.5\nRAZONES: La imagen muestra un animal doméstico con una piel suave y algo liso, una estructura facial que incluye dos ojos, una nariz larga y recta, y una boca que se puede ver. Además, tiene una postura erguida con la cabeza ligeramente inclinada hacia un lado de su cuerpo. Estos detalles se relacionan con el perro en la imagen, lo cual lo hace ser un ejemplo claro de una persona con un perro.",
+        "timestamp": "2026-04-23T10:23:45.619171",
+        "tiempo_procesamiento": 85.70167446136475
+    },
+    {
+        "imagen": "foto9.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto9.jpg",
+        "categoria": "PERRO",
+        "confianza": 0.95,
+        "razones": "La imagen muestra un animal canino corriendo en una área de pasto con una expresión de movimiento y alegría, lo que es característico del perro. Además, el animal tiene características físicas específicas como la forma del pelaje y los ojos, que son consistentes con las descripciones comunes de algunas razas de perros domésticos.",
+        "respuesta_completa": "CATEGORÍA: PERRO\nCONFIANZA: 95\nRAZONES: La imagen muestra un animal canino corriendo en una área de pasto con una expresión de movimiento y alegría, lo que es característico del perro. Además, el animal tiene características físicas específicas como la forma del pelaje y los ojos, que son consistentes con las descripciones comunes de algunas razas de perros domésticos.",
+        "timestamp": "2026-04-23T10:25:03.228795",
+        "tiempo_procesamiento": 77.59637403488159
+    }
+]
