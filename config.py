@@ -1,6 +1,6 @@
 # config.py — configuración compartida terminal + interfaz
 
-# Opciones recomendadas: 'llava', 'moondream', 'bakllava'
+# --- MODELOS ---
 MODELO_VISION = 'llava:7b'
 MODELOS_DISPONIBLES = ['llava:7b', 'moondream']    
 OLLAMA_URL    = 'http://localhost:11434/api/generate'
@@ -16,13 +16,13 @@ CONFIG_CONSISTENTE = {
     'stream': False        # Necesario para recibir el JSON completo de una vez
 }
 
-# Configuración de sistema
+# --- SISTEMA Y RUTAS ---
 TIMEOUT            = 120   # Los modelos de visión pueden tardar en procesar
 MAX_REINTENTOS     = 3
 CARPETA_IMAGENES   = 'img'
 CARPETA_RESULTADOS = 'resultados'
 
-# Categorías que el sistema usará si el usuario no proporciona unas nuevas
+# --- CATEGORÍAS ---
 CATEGORIAS_POR_DEFECTO = [
     'gato', 'perro', 'pajaro', 'auto',
     'comida', 'persona', 'flor', 'arbol',

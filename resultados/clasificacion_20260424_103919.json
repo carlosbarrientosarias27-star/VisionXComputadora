@@ -1,0 +1,42 @@
+[
+    {
+        "imagen": "foto1.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto1.jpg",
+        "categoria": "GATO",
+        "confianza": 0.0,
+        "razones": "No se pudo extraer la explicación",
+        "respuesta_completa": "CATEGORIA: GATO",
+        "timestamp": "2026-04-24T10:38:17.903170",
+        "tiempo_procesamiento": 25.29195737838745
+    },
+    {
+        "imagen": "foto2.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto2.jpg",
+        "categoria": "GATO",
+        "confianza": 0.0,
+        "razones": "No se pudo extraer la explicación",
+        "respuesta_completa": "CATEGORIA: GATO",
+        "timestamp": "2026-04-24T10:38:38.868844",
+        "tiempo_procesamiento": 20.96126937866211
+    },
+    {
+        "imagen": "foto3.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto3.jpg",
+        "categoria": "GATO",
+        "confianza": 0.0,
+        "razones": "No se pudo extraer la explicación",
+        "respuesta_completa": "CATEGORIA: GATO",
+        "timestamp": "2026-04-24T10:38:59.848540",
+        "tiempo_procesamiento": 20.976923942565918
+    },
+    {
+        "imagen": "foto4.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto4.jpg",
+        "categoria": "GATO",
+        "confianza": 0.0,
+        "razones": "No se pudo extraer la explicación",
+        "respuesta_completa": "CATEGORIA: GATO",
+        "timestamp": "2026-04-24T10:39:19.960649",
+        "tiempo_procesamiento": 20.1085422039032
+    }
+]
