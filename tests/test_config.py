@@ -5,6 +5,7 @@ import config
 def test_config_valores_por_defecto():
     """Verifica que las constantes críticas tengan los valores correctos."""
     assert config.MODELO_VISION == 'llava:7b'
+    assert config.MODELOS_DISPONIBLES = ['llava:7b', 'moondream']
     assert config.OLLAMA_URL == 'http://localhost:11434/api/generate'
     assert config.TIMEOUT == 120
 

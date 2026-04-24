@@ -5,14 +5,14 @@ import base64
 import json
 import time
 from config import (
-    MODELO_VISION, 
+    MODELO_VISION,
     OLLAMA_URL, 
     CONFIG_CONSISTENTE, 
     TIMEOUT, 
     CATEGORIAS_POR_DEFECTO
 )
 
-def clasificar_imagen_local(img: str, categorias: list) -> dict:
+def clasificar_imagen_local(img: str, categorias: list, modelo: str = MODELO_VISION) -> dict:
     """
     Clasifica una imagen usando Ollama localmente.
     """
@@ -39,7 +39,7 @@ def clasificar_imagen_local(img: str, categorias: list) -> dict:
 
         # 3. Preparar el payload para la API de Ollama
         payload = {
-            "model": MODELO_VISION,
+            "model": MODELO_VISION, 
             "prompt": prompt_texto,
             "images": [imagen_base64],
             "format": "json",  # Forzamos salida JSON si el modelo lo soporta
