@@ -5,7 +5,7 @@ MODELO_VISION = 'llava:7b'
 MODELOS_DISPONIBLES = ['llava:7b', 'moondream']    
 OLLAMA_URL    = 'http://localhost:11434/api/generate'
 
-# Parámetros para garantizar que la IA no invente categorías (alucinaciones)
+# Parámetros para garantizar consistencia
 CONFIG_CONSISTENTE = {
     'temperature': 0.0,    # Cero aleatoriedad para respuestas deterministas
     'seed': 42,            # Semilla fija para reproducibilidad
