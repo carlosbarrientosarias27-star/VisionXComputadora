@@ -1,0 +1,92 @@
+[
+    {
+        "imagen": "foto1.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto1.jpg",
+        "categoria": "GATO",
+        "confianza": 0.955,
+        "razones": "La imagen muestra claramente un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría.",
+        "respuesta_completa": "CATEGORÍA: GATO\nCONFIANZA: 95.5\nRAZONES: La imagen muestra claramente un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría.",
+        "timestamp": "2026-04-24T10:00:03.281141",
+        "tiempo_procesamiento": 90.38014960289001
+    },
+    {
+        "imagen": "foto2.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto2.jpg",
+        "categoria": "GATO",
+        "confianza": 1.0,
+        "razones": "La imagen muestra un animal con características claramente felineas, como una postura de cabeza erguida y una cinta en torno al cuello. No hay elementos que sugieran otra categoría en la imagen.",
+        "respuesta_completa": "CATEGORÍA: GATO\nCONFIANZA: 100\nRAZONES: La imagen muestra un animal con características claramente felineas, como una postura de cabeza erguida y una cinta en torno al cuello. No hay elementos que sugieran otra categoría en la imagen.",
+        "timestamp": "2026-04-24T10:01:17.615234",
+        "tiempo_procesamiento": 74.30764746665955
+    },
+    {
+        "imagen": "foto3.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto3.jpg",
+        "categoria": "GATO",
+        "confianza": 1.0,
+        "razones": "La imagen muestra claramente un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría.",
+        "respuesta_completa": "CATEGORÍA: GATO\nCONFIANZA: 100\nRAZONES: La imagen muestra claramente un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría.",
+        "timestamp": "2026-04-24T10:02:22.678861",
+        "tiempo_procesamiento": 65.0547571182251
+    },
+    {
+        "imagen": "foto4.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto4.jpg",
+        "categoria": "Pajaro",
+        "confianza": 0.905,
+        "razones": "La imagen muestra un pájaro con las características típicas de la aviación, como una cabeza grande en relación al cuerpo, una garganta que es más clara y con rayas, y la postura del pájaro con las patas firmemente agarradas. Además, los ojos son grandes y redondos, lo que es típico de muchas aves pequeñas.",
+        "respuesta_completa": "CATEGORÍA: Pajaro\nCONFIANZA: 90.5\nRAZONES: La imagen muestra un pájaro con las características típicas de la aviación, como una cabeza grande en relación al cuerpo, una garganta que es más clara y con rayas, y la postura del pájaro con las patas firmemente agarradas. Además, los ojos son grandes y redondos, lo que es típico de muchas aves pequeñas.",
+        "timestamp": "2026-04-24T10:03:46.178473",
+        "tiempo_procesamiento": 83.49284744262695
+    },
+    {
+        "imagen": "foto5.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto5.jpg",
+        "categoria": "Pájaro",
+        "confianza": 0.95,
+        "razones": "La imagen muestra un pequeño pajarito con plumas coloridas y una figura característica en su cabeza, que lo diferencia de los demás tipos de aves como el gato o el perro. Además, la posición sobre un ramo de un árbol también es indicativo de un pájaro.",
+        "respuesta_completa": "CATEGORÍA: Pájaro\nCONFIANZA: 95\nRAZONES: La imagen muestra un pequeño pajarito con plumas coloridas y una figura característica en su cabeza, que lo diferencia de los demás tipos de aves como el gato o el perro. Además, la posición sobre un ramo de un árbol también es indicativo de un pájaro.",
+        "timestamp": "2026-04-24T10:05:05.410201",
+        "tiempo_procesamiento": 79.2216534614563
+    },
+    {
+        "imagen": "foto6.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto6.jpg",
+        "categoria": "Pájaro",
+        "confianza": 0.955,
+        "razones": "La imagen muestra claramente una ave con un cuerpo delicado y plumas con varias bandas, que es muy característico de algunas especies de aves. No hay ninguna otra categoría que coincida con la descripción proporcionada.",
+        "respuesta_completa": "CATEGORÍA: Pájaro\nCONFIANZA: 95.5\nRAZONES: La imagen muestra claramente una ave con un cuerpo delicado y plumas con varias bandas, que es muy característico de algunas especies de aves. No hay ninguna otra categoría que coincida con la descripción proporcionada.",
+        "timestamp": "2026-04-24T10:06:18.555993",
+        "tiempo_procesamiento": 73.13843035697937
+    },
+    {
+        "imagen": "foto7.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto7.jpg",
+        "categoria": "Perro",
+        "confianza": 0.9,
+        "razones": "La imagen muestra a un perro con una piel peluda y plana, orejas erectas y bigotes largos que recuerdan a los huskies. Este animal es comúnmente considerado como el perro más popular en el mundo, y aunque no se ve completamente en la imagen, lo suficiente para identificarlo.",
+        "respuesta_completa": "CATEGORÍA: Perro\nCONFIANZA: 90\nRAZONES: La imagen muestra a un perro con una piel peluda y plana, orejas erectas y bigotes largos que recuerdan a los huskies. Este animal es comúnmente considerado como el perro más popular en el mundo, y aunque no se ve completamente en la imagen, lo suficiente para identificarlo.",
+        "timestamp": "2026-04-24T10:07:40.525724",
+        "tiempo_procesamiento": 81.96179294586182
+    },
+    {
+        "imagen": "foto8.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto8.jpg",
+        "categoria": "PERRO",
+        "confianza": 0.955,
+        "razones": "La imagen muestra un perro con rasgos físicos propios de este animal, como las orejas triangulares, el pelo suave y la postura cansina. Además, hay una gran semblanza con la figura típica de un perro.",
+        "respuesta_completa": "CATEGORÍA: PERRO\nCONFIANZA: 95.5\nRAZONES: La imagen muestra un perro con rasgos físicos propios de este animal, como las orejas triangulares, el pelo suave y la postura cansina. Además, hay una gran semblanza con la figura típica de un perro.",
+        "timestamp": "2026-04-24T10:08:57.035815",
+        "tiempo_procesamiento": 76.48780369758606
+    },
+    {
+        "imagen": "foto9.jpg",
+        "ruta_completa": "C:/Users/IA/Desktop/Apuntes/Tareas/VisioXComputadora/img/foto9.jpg",
+        "categoria": "PERRO",
+        "confianza": 0.955,
+        "razones": "La imagen muestra a un perro corriendo en una zona de pasto verde y azul, con un fondo natural y una actitud de movimiento que lo identifica como una persona en el campo.",
+        "respuesta_completa": "CATEGORÍA: PERRO\nCONFIANZA: 95.5\nRAZONES: La imagen muestra a un perro corriendo en una zona de pasto verde y azul, con un fondo natural y una actitud de movimiento que lo identifica como una persona en el campo.",
+        "timestamp": "2026-04-24T10:10:06.633368",
+        "tiempo_procesamiento": 69.5823585987091
+    }
+]

@@ -24,7 +24,8 @@ except ModuleNotFoundError:
                                   'comida', 'persona', 'flor', 'arbol',
                                   'casa', 'desconocido']
         OLLAMA_URL = "http://localhost:11434/api/generate"
-        MODELO_VISION = "llava"
+        MODELO_VISION = "llava:7b" 
+        MODELOS_DISPONIBLES = ['llava:7b', 'moondream'] 
         TIMEOUT = 300
         CONFIG_CONSISTENTE = {
             "temperature": 0.2,
@@ -50,13 +51,22 @@ class VisionXApp(ctk.CTk):
 
         self.imagenes_seleccionadas = []    
         self.resultados_clasificacion = []  
-        self.clasificando = False          
+        self.clasificando = False    
+
+        self.title("Selector de Modelos")
+        self.geometry("400x300")
+
+        self.modelo_seleccionado = ctk.StringVar(value="llava:7b")
 
         # --- UI LAYOUT ---
         self.setup_ui()
         
         # --- VINCULACIÓN DE LÓGICA ---
         self.setup_logic()
+    
+    def cambio_modelo(self):
+        """Muestra en consola el cambio de modelo."""
+        print(f"DEBUG: Modelo cambiado a: {self.modelo_seleccionado.get()}")
 
     def setup_ui(self):
         # Cabecera
@@ -77,6 +87,32 @@ class VisionXApp(ctk.CTk):
         # Columna Izquierda
         self.left_col = ctk.CTkFrame(self.main_container, fg_color="transparent")
         self.left_col.pack(side="left", fill="both", expand=True, padx=(0, 10))
+
+        model_card = ctk.CTkFrame(self.left_col, fg_color="#252525", corner_radius=10, border_width=1, border_color="#333")
+        model_card.pack(fill="x", pady=(0, 15), ipady=5)
+
+        ctk.CTkLabel(model_card, text="🤖 Modelo de IA", font=ctk.CTkFont(size=16, weight="bold")).pack(anchor="w", padx=15, pady=5)
+
+        # --- NUEVOS RADIO BUTTONS EN LUGAR DEL OPTIONMENU ---
+        self.radio_llava = ctk.CTkRadioButton(
+            model_card, 
+            text="LLaVA: 7B",
+            variable=self.modelo_seleccionado,
+            value="llava:7b",
+            fg_color="#3498db",
+            hover_color="#2980b9"
+        )
+        self.radio_llava.pack(anchor="w", padx=20, pady=5)
+
+        self.radio_moondream = ctk.CTkRadioButton(
+            model_card, 
+            text="Moondream",
+            variable=self.modelo_seleccionado,
+            value="moondream",
+            fg_color="#3498db",
+            hover_color="#2980b9"
+        )
+        self.radio_moondream.pack(anchor="w", padx=20, pady=(5, 15))
         
         # 1. Card Categorías
         cat_card = ctk.CTkFrame(self.left_col, fg_color="#252525", corner_radius=10, border_width=1, border_color="#333")
@@ -360,7 +396,7 @@ class VisionXApp(ctk.CTk):
             RAZONES: La imagen muestra claramente un felino doméstico con orejas puntiagudas y bigotes característicos, sin elementos que sugieran otra categoría."""
             
             payload = {
-                "model": config.MODELO_VISION,
+                "model": self.modelo_seleccionado.get(),
                 "prompt": prompt,
                 "images": [img_base64],
                 **config.CONFIG_CONSISTENTE
