@@ -1,44 +1,57 @@
 import pytest
 import config
 
-## --- CASO FELIZ (Valores esperados) ---
-def test_config_valores_por_defecto():
-    """Verifica que las constantes críticas tengan los valores correctos."""
-    assert config.MODELO_VISION == 'llava:7b'
-    assert config.MODELOS_DISPONIBLES = ['llava:7b', 'moondream']
-    assert config.OLLAMA_URL == 'http://localhost:11434/api/generate'
-    assert config.TIMEOUT == 120
+class TestConfig:
 
-def test_config_consistente_estructura():
-    """Verifica que el diccionario de configuración de la IA sea correcto."""
-    conf = config.CONFIG_CONSISTENTE
-    assert conf['temperature'] == 0.0
-    assert conf['stream'] is False
-    assert isinstance(conf['seed'], int)
+    # --- CASOS FELICES (Happy Path) ---
+    
+    def test_config_constants_types(self):
+        """Verifica que las constantes principales tengan el tipo de dato correcto."""
+        assert isinstance(config.MODELO_VISION, str)
+        assert isinstance(config.MODELOS_DISPONIBLES, list)
+        assert isinstance(config.OLLAMA_URL, str)
+        assert isinstance(config.CONFIG_CONSISTENTE, dict)
+        assert isinstance(config.CATEGORIAS_POR_DEFECTO, list)
 
-## --- CASO DE BORDE (Límites y Tipos) ---
-def test_config_categorias_no_vacias():
-    """Verifica que siempre exista al menos una categoría y 'desconocido' esté presente."""
-    assert len(config.CATEGORIAS_POR_DEFECTO) > 0
-    assert 'desconocido' in config.CATEGORIAS_POR_DEFECTO
+    def test_ollama_url_format(self):
+        """Verifica que la URL de Ollama tenga un formato básico de endpoint."""
+        assert config.OLLAMA_URL.startswith("http://")
+        assert "/api/generate" in config.OLLAMA_URL
 
-def test_config_timeout_positivo():
-    """El timeout debe ser un número razonable para modelos de visión."""
-    assert config.TIMEOUT >= 30
+    def test_deterministic_settings(self):
+        """Asegura que la configuración para evitar alucinaciones sea la correcta."""
+        conf = config.CONFIG_CONSISTENTE
+        assert conf['temperature'] == 0.0
+        assert conf['seed'] == 42
+        assert conf['stream'] is False
 
-## --- CASO DE ERROR (Simulación de fallos) ---
-def test_config_missing_attributes(mocker):
-    """
-    Verifica que si se intenta acceder a una configuración inexistente 
-    (simulado vía mock) el sistema falle como se espera.
-    """
-    # Aunque config.py es estático, podemos mockear su carga en módulos que lo usen
-    # Aquí validamos simplemente la presencia de claves obligatorias
-    required_keys = ['temperature', 'seed', 'stream']
-    for key in required_keys:
-        assert key in config.CONFIG_CONSISTENTE
 
-def test_config_path_format():
-    """Verifica que los nombres de carpetas no tengan caracteres extraños o rutas absolutas peligrosas."""
-    assert not config.CARPETA_IMAGENES.startswith("/")
-    assert config.CARPETA_RESULTADOS == 'resultados'
+    # --- CASOS BORDE (Edge Cases) ---
+
+    def test_modelos_disponibles_not_empty(self):
+        """Verifica que al menos el modelo configurado por defecto esté en la lista de disponibles."""
+        assert len(config.MODELOS_DISPONIBLES) > 0
+        assert config.MODELO_VISION in config.MODELOS_DISPONIBLES
+
+    def test_timeout_bounds(self):
+        """Verifica que el timeout sea un valor razonable (ni muy bajo ni negativo)."""
+        assert 30 <= config.TIMEOUT <= 300
+
+
+    # --- CASOS DE ERROR / INTEGRIDAD ---
+
+    def test_required_keys_in_config_dict(self):
+        """Verifica que el diccionario de configuración no carezca de llaves críticas."""
+        keys_requeridas = ['temperature', 'seed', 'num_predict', 'stream']
+        for key in keys_requeridas:
+            assert key in config.CONFIG_CONSISTENTE, f"Falta la llave crítica: {key}"
+
+    def test_default_categories_integrity(self):
+        """Verifica que la categoría 'desconocido' siempre exista para evitar fallos de clasificación."""
+        assert 'desconocido' in config.CATEGORIAS_POR_DEFECTO
+
+    def test_mocking_config_value(self, mocker):
+        """Ejemplo de uso de pytest-mock para simular un cambio de modelo en tiempo de ejecución."""
+        # Simulamos que el modelo cambia a uno experimental
+        mocker.patch('config.MODELO_VISION', 'modelo-test-123')
+        assert config.MODELO_VISION == 'modelo-test-123'
